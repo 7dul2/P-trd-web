@@ -1,0 +1,161 @@
+.upgrade_popup_mask {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: var(--background-color-frosted-glass);
+    backdrop-filter: blur(3px);
+    z-index: 200;
+
+    display: none;
+    opacity: 0;
+
+    transition: all 0.6s ease;
+}
+
+.upgrade_popup_card {
+    position: fixed;
+    bottom: -60%;
+    left: 0px;
+    width: 100vw;
+
+    background-color: var(--background-color);
+    border-radius: 2rem 2rem 0px 0px;
+    box-shadow: 0px 0px 1.25rem #00000000;
+    z-index: 201;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    transition: all 0.6s ease;
+}
+
+.upgrade_popup_drag {
+    height: 5px;
+    width: 20%;
+    background-color: var(--text-sub-color);
+    border-radius: 15px;
+    margin-top: var(--margin_bottom_3);
+}
+
+.upgrade_title {
+    width: 90%;
+    margin-left: 5%;
+
+    display: flex;
+    align-items: flex-end;
+
+    margin-top: var(--margin_bottom_3);
+}
+
+.upgrade_title h1{
+    margin: 0px;
+
+    font-size: calc(1.5*var(--heading-1-font-size)) ;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.upgrade_title div{
+    background-color: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+    border-radius: 5px;
+
+    padding: 5px 8px;
+    margin-left: var(--margin_bottom_4);
+}
+
+.upgrade_title p{
+    margin: 0px;
+
+    font-size: var(--text-1_5-font-size);
+    font-weight: 600;
+    color: var(--text-color-white);
+}
+
+.upgrade_infos {
+    width: 90%;
+    margin-left: 10%;
+    margin-top: var(--margin_bottom_2);
+
+    display: flex;
+    align-items: center;
+}
+
+.upgrade_log {
+    width: 60%;
+}
+
+.upgrade_log p{
+    margin: 0px;
+    font-weight: 600;
+
+    font-size: var(--text-1-font-size);
+    color: var(--text-color);
+    margin-bottom: var(--margin_bottom_3);
+}
+
+.upgrade_log a{
+    font-size: var(--text-2-font-size);
+    color: var(--text-sub-color);
+}
+
+.upgrade_animation {
+    width: 40%;
+}
+
+.upgrade_animation img{
+    filter: var(--color-reverse-none);
+    width: 100%;
+}
+
+.upgrade_btns {
+    width: 85%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: var(--margin_bottom_2);
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.upgrade_btns p {
+    font-size: var(--text-1-font-size);
+    font-weight: 600;
+    margin: 0px;
+}
+
+.upgrade_btns div{
+    width: 6rem;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 10px 0px;
+}
+
+.upgrade_pass {
+    border: 2px solid var(--primary-color);
+    border-radius: 99px;
+
+    color: var(--text-color);
+}
+
+.upgrade_now {
+    background-color: var(--primary-color);
+    border-radius: 99px;
+    box-shadow: 0 0 10px var(--primary-color);
+
+    color: var(--text-color-white);
+}
+
+.upgrade_ignore {
+    font-size: var(--text-2-font-size);
+    color: var(--text-sub-color);
+
+    margin: 0px;
+    margin-top: var(--margin_bottom_3);
+    margin-bottom: var(--margin_bottom_2);
+}

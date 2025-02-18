@@ -1,0 +1,96 @@
+.ru_select {
+    width: 100%;
+    position: relative;
+    background-color: var(--ru-item-background-color);
+    border-radius: var(--ru-border-radius-sm);
+    height: calc(var(--ru-spacing-xl) + 2 * var(--ru-spacing-xs));
+    display: flex;
+    align-items: flex-end;
+    box-shadow: 0 0 0 var(--ru-item-background-color-none);
+    transition: box-shadow 0.3s ease,height 0.3s ease;
+}
+
+.ru_select label {
+    position: absolute;
+    top: 47.5%;
+    left: max(5%,var(--ru-spacing-xs));
+    transform: translateY(-50%);
+    font-size: var(--ru-font-size-body);
+    transition: all 0.3s ease;
+    color: var(--ru-text-color);
+
+    font-weight: 600;
+
+    user-select: none;
+}
+.ru_select[focus="true"] label {
+    top: var(--ru-spacing-md);
+    left: 5%;
+    font-size: var(--ru-font-size-small-body);
+    color: var(--ru-sub-text-color);
+    font-weight: normal;
+}
+.ru_select[hintable="true"] label {
+    display: block;
+}
+.ru_select[hintable="false"] label {
+    display: none;
+}
+
+.ru_select svg {
+    position: absolute;
+    top: 47.5%;
+    right: max(5%,var(--ru-spacing-xs));
+    transform: translateY(-50%);
+    height : var(--ru-font-size-body);
+    transition: all 0.3s ease;
+    fill: var(--ru-text-color);
+    font-weight: 600;
+}
+
+.ru_select div {
+    transition: all 0.3s ease;
+    display: flex;
+    width: 100%;
+    position: absolute;
+    top: calc(100% + var(--ru-spacing-sm));
+    background-color : var(--ru-item-background-color-glass);
+    user-select: none;
+    backdrop-filter: blur(10px);
+    border-radius: var(--ru-border-radius-sm);
+    height: 0px;
+}
+
+.ru_select[focus="true"] div  {
+    animation: pop_in 0.3s ease-out;
+    height: var(--ru-spacing-xl);
+    border: 1px solid var(--ru-item-background-color);
+}
+
+.ru_select[focus="false"] div {
+    animation: pop_out 0.3s ease-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+@keyframes pop_in {
+    from {
+        opacity: 0;
+        scale: 0.8
+    }
+    to {
+        opacity: 1;
+        scale: 1
+    }
+}
+
+@keyframes pop_out {
+    from {
+        opacity: 1;
+        scale: 1;
+    }
+    to {
+        opacity: 0;
+        scale: 0.8;
+    }
+}

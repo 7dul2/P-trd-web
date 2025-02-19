@@ -316,7 +316,7 @@
             marginBottom : "var(--margin_bottom_1)"
         }
     },document.getElementById("container"));
-    var url = "https://api-csob.ok-skins.com/api/v2/market/total?timeRange=DAY&platform=0";
+    var url = "https://api-csob.ok-skins.com/api/v2/market/total?timeRange=DAY&platform=0&timestamp=1739363910990";
     Request.get(url,"market_datas", "receive");
     wait4value("market_datas").then(value => {
         load_finish();
@@ -583,7 +583,7 @@
         tag : "div",
         className : "items_datas"
     },document.getElementById("container"));
-    var url = "https://api-csob.ok-skins.com/api/v2/market/chart?type=priceData&subType=totalMarketPrice&timeRange=WEEK&platform=0";
+    var url = "https://api-csob.ok-skins.com/api/v2/market/chart?type=priceData&subType=totalMarketPrice&timeRange=WEEK&platform=0&timestamp=1739363910990";
     Request.get(url,"price_block", "receive");
     wait4value("price_block").then(value => {
         load_finish();

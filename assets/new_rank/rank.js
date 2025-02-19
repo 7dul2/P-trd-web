@@ -852,7 +852,7 @@ function init_nav() {
 }
 
 function load_infos(name,key){
-    var url = "https://api-csob.ok-skins.com/api/v2/goods/chart"
+    var url = "https://api-csob.ok-skins.com/api/v2/goods/chart?timestamp=1739363910990"
     var post_data = {"goodsId":item_names[name].id,"platform":0,"timeRange":"MONTH","data":["createTime","minPrice","sellCount","steamPrice","purchaseCount","purchaseMaxPrice"]}
 
     Request.post(url,JSON.stringify(post_data),key, "receive");

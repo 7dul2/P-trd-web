@@ -404,7 +404,7 @@ function update_rank_items_infos(_index){
 
                 id = match_id(name,"buff"); // 先尝试本底读取,如果存在就不需要再请求csob了
                 if (!id){
-                    var url = "https://api-csob.ok-skins.com/api/v2/goods/info";
+                    var url = "https://api-csob.ok-skins.com/api/v2/goods/info?timestamp=1739363910990";
                     var post_data = {"goodsName":name};
                     Request.post(url,JSON.stringify(post_data),"item_infos_"+name, "receive");
                 }else{
@@ -424,7 +424,7 @@ function update_rank_items_infos(_index){
                         c.children[1].children[1].children[1].children[1].innerText = datas["data"]["buy_max_price"];
                     });
 
-                    var url = "https://api-csob.ok-skins.com/api/v2/goods/chart";
+                    var url = "https://api-csob.ok-skins.com/api/v2/goods/chart?timestamp=1739363910990";
                     var post_data = {"goodsId":id,"platform":0,"timeRange":"HALF_YEAR","data":["createTime","minPrice","sellCount"]}
                     Request.post(url,JSON.stringify(post_data),"item_charts_"+id, "receive");
                     wait4value("item_charts_"+id).then(value => {

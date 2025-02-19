@@ -68,7 +68,7 @@
     },document.getElementById("container"));
 
     // infos
-    var url = "https://api-csob.ok-skins.com/api/v2/goods/info";
+    var url = "https://api-csob.ok-skins.com/api/v2/goods/info?timestamp=1739363910990";
     var post_data = {"goodsName":item_name};
     Request.post(url,JSON.stringify(post_data),"item_info", "receive");
     wait4value("item_info").then(value => {
@@ -534,8 +534,8 @@
     }
 
     function line(){
-        var url = "https://api-csob.ok-skins.com/api/v2/goods/chart";
-        var post_data = {"goodsId":all_resps["id"],"platform":0,"timeRange":"YEAR","data":["createTime","minPrice","sellCount"]};
+        var url = "https://api-csob.ok-skins.com/api/v2/goods/chart?timestamp=1739363910990";
+        var post_data = {"goodsId":all_resps["id"],"platform":0,"timeRange":"HALF_YEAR","data":["createTime","minPrice","sellCount"]};
         Request.post(url,JSON.stringify(post_data),"item_line", "receive");
         wait4value("item_line").then(value => {
             var resp = JSON.parse(all_resps["item_line"]).data.list;
@@ -821,7 +821,7 @@
             delay: 0.3
         });
 
-        var url = "https://api-csob.ok-skins.com/api/v1/goods/chart/kline";
+        var url = "https://api-csob.ok-skins.com/api/v1/goods/chart/kline?timestamp=1739363910990";
         var post_data = {"goods":{"goodsId":all_resps["id"],"platform":0},"kType":"DAY","isFilter":false,"samplingSize":5,"upPercent":30,"downPercent":30}
         Request.post(url,JSON.stringify(post_data),"item_kline", "receive");
         wait4value("item_kline").then(value => {

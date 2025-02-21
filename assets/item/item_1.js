@@ -805,6 +805,301 @@
         });
     }
 
+    // steamDT源的数据
+    function line_dt(){
+        var hash_name = item_names[item_name].market_hash_name;
+
+        var url = "https://sdt-api.ok-skins.com/user/skin/v1/item"
+        var post_data = {
+            "appId": 730,
+            "marketHashName": hash_name
+        }
+        Request.post(url,JSON.stringify(post_data),"item_dt", "receive");
+        wait4value("item_dt").then(value=>{
+            var dt_id = JSON.parse(value).data.id;
+            
+            var url = "https://sdt-api.ok-skins.com/user/steam/type-trend/v2/item/details";
+            var post_data = {
+                "platform": "YOUPIN",
+                "typeDay": "5",
+                "dateType": 3,
+                "itemId": dt_id,
+                "timestamp": new Date().getTime()
+            }
+            Request.post(url,JSON.stringify(post_data),"chart_dt", "receive");
+            wait4value("chart_dt").then(value=>{
+                var resp = JSON.parse(value).data;
+                
+                // 处理数据格式
+                var timestamps = resp.map(item => item[0]);
+                var prices = resp.map(item => item[1]);
+                var nums = resp.map(item => item[2]);
+
+                // 转换时间戳为日期格式
+                timestamps = timestamps.map(item => {
+                    const date = new Date(parseInt(item) * 1000);
+                    return date.getFullYear() + '-' + 
+                           (date.getMonth() + 1).toString().padStart(2, '0') + '-' + 
+                           date.getDate().toString().padStart(2, '0');
+                });
+
+                var legends = _ie({
+                    tag : 'div',
+                    className : "chart_legends",
+                    children : [
+                        {
+                            tag : "div",
+                            className : "legend",
+                            children : [
+                                {
+                                    tag : "div",
+                                    className : "top",
+                                    children : [
+                                        {
+                                            tag : "div",
+                                            className : "l1",
+                                        },
+                                        {
+                                            tag : "p",
+                                            innerHTML : "价格"
+                                        }
+                                    ]
+                                },
+                                {
+                                    tag : "p",
+                                    innerHTML : prices[prices.length-1]
+                                }
+                            ]
+                        },
+                        {
+                            tag : "div",
+                            className : "legend",
+                            children : [
+                                {
+                                    tag : "div",
+                                    className : "top",
+                                    children : [
+                                        {
+                                            tag : "div",
+                                            className : "l2",
+                                        },
+                                        {
+                                            tag : "p",
+                                            innerHTML : "在售量"
+                                        }
+                                    ]
+                                },
+                                {
+                                    tag : "p",
+                                    innerHTML : nums[nums.length-1]
+                                }
+                            ]
+                        },
+                    ]
+                },chart);
+                gsap.from(legends, {
+                    duration: 0.5, 
+                    y: 50, 
+                    opacity: 0,
+                    ease: "power3.out",
+                    delay: 0
+                });
+        
+                var _chart = _ie({
+                    tag : "div",
+                    id : "chart"
+                },chart);
+                gsap.from(_chart, {
+                    duration: 0.5, 
+                    y: 50, 
+                    opacity: 0,
+                    ease: "power3.out",
+                    delay: 0.3
+                });
+    
+                var option = {
+                    tooltip: {
+                        backgroundColor : "#8e8e8e",
+                        borderColor: '#8e8e8e',
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 12,
+                        },
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            label: {
+                                backgroundColor: '#8e8e8e',
+                            },
+                            fontSize: 12,
+                        },
+                        formatter: function(params) {
+                            return params.map(param => {
+                                const seriesName = param.seriesName;
+                                const value = param.value;
+                                return `${seriesName}: ${value}`;
+                            }).join('<br/>');
+                        }
+                    },
+                    legend: {
+                        show: false,
+                        selected: {
+                            '价格': true,
+                            "在售量" : true
+                        },
+                    },
+                    grid: {
+                        top: '5%',
+                        right: '13%',
+                        bottom: '15%',
+                        left: '13%',
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: timestamps,
+                        axisLabel: {
+                            fontSize: 10,
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#8e8e8e'
+                            }
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    },
+                    yAxis: [
+                        {
+                            type: 'value',
+                            scale: true,
+                            position: 'left',
+                            axisLabel: {
+                                formatter: function(value) {
+                                    if (value >= 10000) {
+                                        return (value / 10000) + 'w';
+                                    } else if (value >= 1000) {
+                                        return (value / 1000) + 'k';
+                                    } else {
+                                        return value;
+                                    }
+                                },
+                                fontSize: 10,
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#8e8e8e'
+                                }
+                            },
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.05)',
+                                    width: 1,
+                                    type: 'solid',
+                                }
+                            },
+                        },
+                        {
+                            type: 'value',
+                            scale: true,
+                            position: 'right',
+                            axisLabel: {
+                                formatter: function(value) {
+                                    if (value >= 10000) {
+                                        return (value / 10000) + 'w';
+                                    } else if (value >= 1000) {
+                                        return (value / 1000) + 'k';
+                                    } else {
+                                        return value;
+                                    }
+                                },
+                                fontSize: 10,
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#8e8e8e'
+                                }
+                            },
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.05)',
+                                    width: 1,
+                                    type: 'solid',
+                                }
+                            },
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "价格",
+                            type: 'line',
+                            smooth: 0.4,
+                            symbol: 'none',
+                            lineStyle: {
+                                color: "#157efb",
+                                width: 2,
+                            },
+                            connectNulls: true,
+                            data: prices,
+                            animationDuration: 500,
+                            animationEasing: 'cubicInOut',
+                            yAxisIndex: 0
+                        },
+                        {
+                            name: "在售量",
+                            type: 'line',
+                            smooth: 0.4,
+                            symbol: 'none',
+                            lineStyle: {
+                                color: "#53d769",
+                                width: 2,
+                            },
+                            connectNulls: true,
+                            data: nums,
+                            animationDuration: 500,
+                            animationEasing: 'cubicInOut',
+                            yAxisIndex: 1 
+                        },
+                    ],
+                    dataZoom: [
+                        {
+                            show : false,
+                            type: 'inside',
+                            xAxisIndex: [0],
+                        },
+                        {
+                            show : false,
+                            type: 'slider',
+                            xAxisIndex: [0],
+                            bottom: 0,
+                        }
+                    ]
+                };
+                const selectedStatus = {};
+                option.series.forEach(series => {
+                    selectedStatus[series.name] = true;
+                });
+                var _chart_ = echarts.init(document.getElementById('chart'));
+                _chart_.setOption(option);
+                document.querySelectorAll('.legend').forEach((item, index) => {
+                    item.addEventListener('click', () => {
+                        const seriesName = option.series[index].name;
+                        const isActive = item.classList.toggle('active');
+                        selectedStatus[seriesName] = !isActive;
+                        _chart_.setOption({
+                            legend: {
+                                selected: selectedStatus
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    }
+
     function k_line(){
         var _chart = _ie({
             tag : "div",
@@ -920,7 +1215,7 @@
         if (type === "line"){
             document.getElementById("line").style.fill = "var(--text-color)";
             document.getElementById("k_line").style.fill = "";
-            line();
+            line_dt();
         }
 
         if (type === "k_line"){

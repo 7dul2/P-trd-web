@@ -27,7 +27,6 @@
     color: var(--text-color);
     white-space: nowrap;
     overflow: auto;
-    text-overflow: ellipsis;
     margin: 0;
     margin-bottom: 1%;
     margin-left: 1rem;
@@ -361,6 +360,11 @@
     font-weight: 400;
     justify-content: center;
     margin-top: var(--margin_bottom_2);
+}
+
+.mark b{
+    font-weight: 600;
+    color: var(--text-color);
 }
 
 #name {

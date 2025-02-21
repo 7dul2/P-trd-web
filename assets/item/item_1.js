@@ -533,6 +533,7 @@
         });
     }
 
+    // csgoob源的数据
     function line(){
         var url = "https://api-csob.ok-skins.com/api/v2/goods/chart?timestamp=1739363910990";
         var post_data = {"goodsId":all_resps["id"],"platform":0,"timeRange":"HALF_YEAR","data":["createTime","minPrice","sellCount"]};
@@ -919,13 +920,20 @@
     
                 var option = {
                     tooltip: {
-                        backgroundColor : "#8e8e8e",
+                        backgroundColor: "#8e8e8e",
                         borderColor: '#8e8e8e',
                         textStyle: {
                             color: '#fff',
                             fontSize: 12,
                         },
                         trigger: 'axis',
+                        position: function (pos, params, el, elRect, size) {
+                            const chartWidth = size.viewSize[0];
+                            const posX = pos[0] < chartWidth / 2 ? 'right' : 'left';
+                            const leftPos = 40;
+                            const rightPos = 120;
+                            return [posX === 'right' ? `${size.viewSize[0] - rightPos}` : leftPos, 10];
+                        },
                         axisPointer: {
                             type: 'cross',
                             label: {
@@ -1066,15 +1074,19 @@
                     ],
                     dataZoom: [
                         {
-                            show : false,
                             type: 'inside',
                             xAxisIndex: [0],
+                            start: Math.max(0, ((timestamps.length - 30) / timestamps.length) * 100),
+                            end: 100,
+                            zoomLock: false
                         },
                         {
-                            show : false,
+                            show: false,
                             type: 'slider',
                             xAxisIndex: [0],
-                            bottom: 0,
+                            start: Math.max(0, ((timestamps.length - 30) / timestamps.length) * 100),
+                            end: 100,
+                            bottom: 0
                         }
                     ]
                 };

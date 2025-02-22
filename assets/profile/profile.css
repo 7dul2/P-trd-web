@@ -96,3 +96,9 @@ up {
 down {
     color: var(--down-color);
 }
+
+a {
+    text-decoration: none;
+    font-size: var(--text-1-font-size);
+    color: var(--text-color);
+}

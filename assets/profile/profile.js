@@ -20,6 +20,45 @@ document.getElementById("trend_color_preference").onclick = function(){
     trend_color_load();
 }
 
+// 主题颜色
+function theme_color_load(){
+    var icons = document.getElementById("theme_color").children[0].children;
+    var status = load_theme_color_preference();
+    if (status == "dark"){
+        document.getElementById("theme_color_text").innerHTML = "<a>深色</a>"
+        icons[0].style.display = "none";
+        icons[1].style.display = "";
+        icons[2].style.display = "none";
+    }
+    if (status == "light"){
+        document.getElementById("theme_color_text").innerHTML = "<a>浅色</a>"
+        icons[0].style.display = "";
+        icons[1].style.display = "none"
+        icons[2].style.display = "none";
+    }
+    if (status == "system"){
+        document.getElementById("theme_color_text").innerHTML = "<a>跟随系统</a>"
+        icons[0].style.display = "none";
+        icons[1].style.display = "none"
+        icons[2].style.display = "";
+    }
+}
+theme_color_load();
+document.getElementById("theme_color").onclick = function(){
+    var status = load_theme_color_preference();
+    if (status == "dark"){
+        DataBase.executeSQL("INSERT OR REPLACE INTO config (name, value) VALUES (?,?)",["theme_color_preference","light"]);
+    }
+    if (status == "light"){
+        DataBase.executeSQL("INSERT OR REPLACE INTO config (name, value) VALUES (?,?)",["theme_color_preference","system"]);
+    }
+    if (status == "system"){
+        DataBase.executeSQL("INSERT OR REPLACE INTO config (name, value) VALUES (?,?)",["theme_color_preference","dark"]);
+    }
+    theme_color_load();
+}
+
+
 // 赞助我们
 document.getElementById("sponsor").onclick = function(){
     Jump.jump("web","https://afdian.com/a/7dul2")

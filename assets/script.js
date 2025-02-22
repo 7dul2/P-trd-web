@@ -438,6 +438,47 @@ function load_trend_color_preference(){
 }
 load_trend_color_preference();
 
+function load_theme_color_preference(){
+    var status = "system";
+
+    // 主题颜色偏好
+    var theme_color_preference = DataBase.query("SELECT * FROM config WHERE name =?", ["theme_color_preference"]);
+    // dark：表示深色主题（标准状态）
+    // light：表示浅色主题（反转状态）
+    // system：表示跟随系统（反转状态）
+
+    if (theme_color_preference.length == 0){
+        // 初始值
+        DataBase.executeSQL("INSERT OR REPLACE INTO config (name, value) VALUES (?,?)",["theme_color_preference","system"]);
+    }else {
+        theme_color_preference = theme_color_preference.replace(" ","").split('\n').map(item => item.split(','))[0][1];
+        if (theme_color_preference == "dark"){
+            status = "dark"
+        }
+        if (theme_color_preference == "light"){
+            status = "light"
+        }
+        if (theme_color_preference == "system"){
+            status = "system"
+        }
+    }
+
+    if (status === "dark"){
+        document.documentElement.classList.remove('light-theme');
+        document.documentElement.classList.add('dark-theme');
+    }
+    if (status === "light"){
+        document.documentElement.classList.remove('dark-theme');
+        document.documentElement.classList.add('light-theme');
+    }
+    if (status === "system"){
+        document.documentElement.classList.remove('dark-theme', 'light-theme');
+    }
+
+    return status;
+}
+load_theme_color_preference();
+
 
 function prevent_scroll(e) {
     e.preventDefault(); // 阻止默认滚动行为

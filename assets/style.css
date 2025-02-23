@@ -75,30 +75,25 @@
       --theme-color-reverse-yes: invert(0);
     }
   }
+
   
-  /*
-    手动主题切换：
-    - 若用户选择强制“暗色”，则在 html 元素上添加 .dark-theme 类；
-    - 若用户选择强制“亮色”，则添加 .light-theme 类；
-    - 若用户选择跟随系统（system），则移除上述两个类。
-  */
-  
-  /* 手动强制暗色主题 */
-  html.dark-theme {
+
+/* 手动强制暗色主题 */
+html.dark-theme {
     --theme-primary-color: #157efb;
-    
+
     --theme-background-color: #1d1d1f;
     --theme-background-color-glass: #1d1d1fA6;
     --theme-background-color-frosted-glass: #1d1d1fd8;
     --theme-background-sub-color: #27272a;
-    
+
     --theme-text-color: #F5F5F7;
     --theme-text-sub-color: #9999a1;
     --theme-text-dark-color: #F5F5F7;
     --theme-text-color-white: #F5F5F7;
-    
+
     --theme-box-shadow-color: #F5F5F72e;
-    
+
     --theme-up-color: #00AA41;
     --theme-down-color: #DB2F63;
     --theme-stay-color: #9999a1;
@@ -107,7 +102,7 @@
     --theme-chart-color-3: #fdcb2e;
     --theme-chart-color-4: #fd3d3a;
     --theme-chart-color-5: #60c9f8;
-    
+
     --theme-heading-large-font-size: 3.6rem;
     --theme-heading-1-font-size: 22px;
     --theme-heading-2-font-size: 18px;
@@ -115,41 +110,59 @@
     --theme-text-1_5-font-size: 13.5px;
     --theme-text-2-font-size: 12px;
     --theme-text-3-font-size: 10px;
-    
+
     --theme-border-radius-1: 0.5rem;
     --theme-border-radius-2: 0.3rem;
-    
+
     --theme-margin_bottom_1: 3rem;
     --theme-margin_bottom_1_5: 2.25rem;
     --theme-margin_bottom_2: 1.5rem;
     --theme-margin_bottom_3: 1rem;
     --theme-margin_bottom_4: 0.6rem;
     --theme-margin_bottom_5: 0.3rem;
-    
+
     --theme-color-reverse-none: invert(0);
     --theme-color-reverse-yes: invert(1);
-  }
+}
   
-  /* 手动强制亮色主题 */
-  html.light-theme {
+/* 手动强制亮色主题 */
+html.light-theme {
     --theme-primary-color: #1d1d1f;
-    
+
     --theme-background-color: #F5F5F7;
     --theme-background-color-glass: #F5F5F7A6;
     --theme-background-color-frosted-glass: #F5F5F7d8;
     --theme-background-sub-color: #ededed;
-    
+
     --theme-text-color: #1d1d1f;
     --theme-text-sub-color: #66665e;
     --theme-text-dark-color: #1d1d1f;
     --theme-text-color-white: #1d1d1f;
-    
+
     --theme-box-shadow-color: #1d1d1f2e;
-    
+
     --theme-color-reverse-none: invert(1);
     --theme-color-reverse-yes: invert(0);
-  }
+}
   
+html.nailong-theme {
+    --theme-primary-color: #1d1d1f;
+
+    --theme-background-color: #f3cf50;
+    --theme-background-color-glass: #f3cf50A6;
+    --theme-background-color-frosted-glass: #f3cf50d8;
+    --theme-background-sub-color: #eee588;
+
+    --theme-text-color: #fff;
+    --theme-text-sub-color: #fffac8;
+    --theme-text-dark-color: #fffac8;
+    --theme-text-color-white: #fffac8;
+
+    --theme-box-shadow-color: #fffac8;
+
+    --theme-color-reverse-none: invert(1);
+    --theme-color-reverse-yes: invert(0);
+}
 
 body {
     background-color: var(--background-color);

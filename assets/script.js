@@ -446,6 +446,7 @@ function load_theme_color_preference(){
     // dark：表示深色主题（标准状态）
     // light：表示浅色主题（反转状态）
     // system：表示跟随系统（反转状态）
+    // nailong：表示奶龙主题（反转状态）
 
     if (theme_color_preference.length == 0){
         // 初始值
@@ -461,18 +462,25 @@ function load_theme_color_preference(){
         if (theme_color_preference == "system"){
             status = "system"
         }
+        if (theme_color_preference == "nailong"){
+            status = "nailong"
+        }
     }
 
     if (status === "dark"){
-        document.documentElement.classList.remove('light-theme');
+        document.documentElement.classList.remove('light-theme', 'nailong-theme');
         document.documentElement.classList.add('dark-theme');
     }
     if (status === "light"){
-        document.documentElement.classList.remove('dark-theme');
+        document.documentElement.classList.remove('dark-theme', 'nailong-theme');
         document.documentElement.classList.add('light-theme');
     }
     if (status === "system"){
+        document.documentElement.classList.remove('dark-theme', 'light-theme', 'nailong-theme');
+    }
+    if (status === "nailong"){
         document.documentElement.classList.remove('dark-theme', 'light-theme');
+        document.documentElement.classList.add('nailong-theme');
     }
 
     return status;

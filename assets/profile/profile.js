@@ -42,6 +42,12 @@ function theme_color_load(){
         icons[1].style.display = "none"
         icons[2].style.display = "";
     }
+    if (status == "nailong"){
+        document.getElementById("theme_color_text").innerHTML = "<a>奶龙</a>"
+        icons[0].style.display = "none";
+        icons[1].style.display = "none"
+        icons[2].style.display = "";
+    }
 }
 theme_color_load();
 document.getElementById("theme_color").onclick = function(){
@@ -53,6 +59,9 @@ document.getElementById("theme_color").onclick = function(){
         DataBase.executeSQL("INSERT OR REPLACE INTO config (name, value) VALUES (?,?)",["theme_color_preference","system"]);
     }
     if (status == "system"){
+        DataBase.executeSQL("INSERT OR REPLACE INTO config (name, value) VALUES (?,?)",["theme_color_preference","nailong"]);
+    }
+    if (status == "nailong"){
         DataBase.executeSQL("INSERT OR REPLACE INTO config (name, value) VALUES (?,?)",["theme_color_preference","dark"]);
     }
     theme_color_load();

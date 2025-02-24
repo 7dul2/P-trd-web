@@ -9,6 +9,8 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+
+    transition: all 0.3s ease;
 }
 
 .menu_top {
@@ -34,6 +36,8 @@
 .container {
     margin-top: calc(7vh + var(--margin_bottom_2));
     width: 100%;
+
+    transition: all 0.3s ease;
 }
 
 .setting_block {
@@ -101,4 +105,17 @@ a {
     text-decoration: none;
     font-size: var(--text-1-font-size);
     color: var(--text-color);
+}
+
+#trend_color_icons svg{
+    translate: fill 0.3s ease;
+}
+
+#trend_color_icons svg:nth-child(1) {
+    fill: var(--up-color);
+    margin-right: 0.3rem;
+}
+
+#trend_color_icons svg:nth-child(2) {
+    fill: var(--down-color);
 }

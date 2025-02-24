@@ -67,14 +67,106 @@
         className : "chart"
     },document.getElementById("container"));
 
-    // infos
-    var url = "https://api-csob.ok-skins.com/api/v2/goods/info?timestamp=1739363910990";
-    var post_data = {"goodsName":item_name};
-    Request.post(url,JSON.stringify(post_data),"item_info", "receive");
-    wait4value("item_info").then(value => {
+    // infos dt
+    var hash_name = item_names[item_name].market_hash_name;
+
+    var url = "https://sdt-api.ok-skins.com/user/skin/v1/item"
+    var post_data = {
+        "appId": 730,
+        "marketHashName": hash_name
+    }
+    Request.post(url,JSON.stringify(post_data),"infos_dt", "receive");
+    wait4value("infos_dt").then(value=>{
         document.getElementById('loading').style.display = "none";
-        infos_handling();
-    });
+        var resp = JSON.parse(value).data;
+
+        all_resps["dt_id"] = resp.itemId;
+
+        // tags
+        if (resp.exteriorName){ // 磨损
+            gsap.from(_ie({tag:"div",className:"tag",children:[{tag:"p",innerHTML:resp.exteriorName}]},tags), {
+                duration: 0.5, 
+                x: 50, 
+                opacity: 0,
+                ease: "power3.out",
+                delay: 0
+            });
+        }
+        if (resp.rarityName){ // 稀有度
+            gsap.from(_ie({tag:"div",className:"tag",children:[{tag:"p",innerHTML:resp.rarityName}]},tags), {
+                duration: 0.5, 
+                x: 50, 
+                opacity: 0,
+                ease: "power3.out",
+                delay: 0
+            });
+        }
+        if (resp.qualityName){ // 品质
+            gsap.from(_ie({tag:"div",className:"tag",children:[{tag:"p",innerHTML:resp.qualityName}]},tags), {
+                duration: 0.5, 
+                x: 50, 
+                opacity: 0,
+                ease: "power3.out",
+                delay: 0
+            });
+        }
+
+        // datas
+        info_heading.children[0].innerHTML = "在售价";
+        var prices_ = resp.sellingPriceList;
+        info_heading.style.display = "";
+        gsap.from(info_heading, {
+            duration: 0.5, 
+            y: 50, 
+            opacity: 0,
+            ease: "power3.out",
+            delay: 0
+        });
+        var _option = {
+            tag: "div",
+            className: "infos",
+            children: []
+        };
+        const prices__ = prices_.sort((_a, _b) => _a.price - _b.price);
+        var counter = 1;
+        prices__.forEach(_c => {
+            let _flag = "";
+
+            if (counter === 1){
+                _flag = "<b>Min</b>"
+            }
+
+            if (counter === prices__.length){
+                _flag = "<b>Max</b>"
+            }
+            _option.children.push(
+                {
+                    tag: "div",
+                    className: "info",
+                    children: [
+                        {
+                            tag: "p",
+                            innerHTML: _c.price
+                        },
+                        {
+                            tag: "a",
+                            innerHTML: _c.platformName + _flag
+                        }
+                    ]
+                },
+            )
+
+            counter ++;
+        });
+        gsap.from(_ie(_option,horizontal_infos_list), {
+            duration: 0.5, 
+            x: 50, 
+            opacity: 0,
+            ease: "power3.out",
+            delay: 0.3
+        });
+
+    })
 
     function extractTextInBrackets(str) {
         const matches = str.match(/[\(\（]([^\)\）]+)[\)\）]/g);
@@ -85,6 +177,7 @@
         return result
     }
 
+    // csgoob源的数据处理方法(已经废弃)
     function infos_handling(){
         var resp = JSON.parse(all_resps["item_info"]).data;
 
@@ -171,77 +264,7 @@
         const _prices = Array.from(info.values()).map(item => item.minPrice || 0);
         var p_min = _prices.indexOf(Math.min(..._prices.filter(price => price > 0)));
         var p_max = _prices.indexOf(Math.max(..._prices.filter(price => price > 0)));
-        var _option = {
-            tag: "div",
-            className: "infos",
-            children: [
-                {
-                    tag: "div",
-                    className: "info",
-                    children: [
-                        {
-                            tag: "p",
-                            innerHTML: isNaN(info[0].minPrice / 100) ? 0 : info[0].minPrice / 100
-                        },
-                        {
-                            tag: "a",
-                            innerHTML: "BUFF"
-                        }
-                    ]
-                },
-                {
-                    tag: "div",
-                    className: "info",
-                    children: [
-                        {
-                            tag: "p",
-                            innerHTML: isNaN(info[1].minPrice / 100) ? 0 : info[1].minPrice / 100
-                        },
-                        {
-                            tag: "a",
-                            innerHTML: "悠悠有品"
-                        }
-                    ]
-                },
-                {
-                    tag: "div",
-                    className: "info",
-                    children: [
-                        {
-                            tag: "p",
-                            innerHTML: isNaN(info[2].minPrice / 100) ? 0 : info[2].minPrice / 100
-                        },
-                        {
-                            tag: "a",
-                            innerHTML: "IGXE"
-                        }
-                    ]
-                },
-                {
-                    tag: "div",
-                    className: "info",
-                    children: [
-                        {
-                            tag: "p",
-                            innerHTML: isNaN(info[3].minPrice / 100) ? 0 : info[3].minPrice / 100
-                        },
-                        {
-                            tag: "a",
-                            innerHTML: "C5"
-                        }
-                    ]
-                }
-            ]
-        };
-        _option.children[p_min].children[1].innerHTML += "<b>Min</b>";
-        _option.children[p_max].children[1].innerHTML += "<b>Max</b>";
-        gsap.from(_ie(_option,horizontal_infos_list), {
-            duration: 0.5, 
-            x: 50, 
-            opacity: 0,
-            ease: "power3.out",
-            delay: 0.3
-        });
+
         // 求购价格
         const _buy_prices = Array.from(info.values()).map(item => item.purchaseMaxPrice || 0);
         var b_min = _buy_prices.indexOf(Math.min(..._buy_prices.filter(price => price > 0)));
@@ -465,77 +488,11 @@
                 update_indicator(active_card_index);
             }, 10);
         });
-
-        var heading = _ie({
-            tag : "div",
-            className : "chart_heading",
-            children : [
-                {
-                    tag : "p",
-                    innerHTML : "价格"
-                },
-                {
-                    tag : "div",
-                    className : "chart_switch",
-                    children : [
-                        {
-                            tag: 'svg',
-                            id: 'line',
-                            attribute : {
-                                width: '1.3rem',
-                                viewBox: '64 64 896 896',
-                            },
-                            children: [
-                                {
-                                    tag: 'path',
-                                    attribute : {
-                                        d: 'M888 792H200V168c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v688c0 4.4 3.6 8 8 8h752c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM305.8 637.7c3.1 3.1 8.1 3.1 11.3 0l138.3-137.6L583 628.5c3.1 3.1 8.2 3.1 11.3 0l275.4-275.3c3.1-3.1 3.1-8.2 0-11.3l-39.6-39.6a8.03 8.03 0 00-11.3 0l-230 229.9L461.4 404a8.03 8.03 0 00-11.3 0L266.3 586.7a8.03 8.03 0 000 11.3l39.5 39.7z'
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            tag : "p",
-                            innerHTML : "|"
-                        },
-                        {
-                            tag: 'svg',
-                            id: 'k_line',
-                            attribute : {
-                                width: '1.3rem',
-                                viewBox: '64 64 896 896',
-                            },
-                            children: [
-                                {
-                                    tag: 'path',
-                                    attribute : {
-                                        d: 'M320 224h-66v-56c0-4.4-3.6-8-8-8h-52c-4.4 0-8 3.6-8 8v56h-66c-4.4 0-8 3.6-8 8v560c0 4.4 3.6 8 8 8h66v56c0 4.4 3.6 8 8 8h52c4.4 0 8-3.6 8-8v-56h66c4.4 0 8-3.6 8-8V232c0-4.4-3.6-8-8-8zm-60 508h-80V292h80v440zm644-436h-66v-96c0-4.4-3.6-8-8-8h-52c-4.4 0-8 3.6-8 8v96h-66c-4.4 0-8 3.6-8 8v416c0 4.4 3.6 8 8 8h66v96c0 4.4 3.6 8 8 8h52c4.4 0 8-3.6 8-8v-96h66c4.4 0 8-3.6 8-8V304c0-4.4-3.6-8-8-8zm-60 364h-80V364h80v296zM612 404h-66V232c0-4.4-3.6-8-8-8h-52c-4.4 0-8 3.6-8 8v172h-66c-4.4 0-8 3.6-8 8v200c0 4.4 3.6 8 8 8h66v172c0 4.4 3.6 8 8 8h52c4.4 0 8-3.6 8-8V620h66c4.4 0 8-3.6 8-8V412c0-4.4-3.6-8-8-8zm-60 145a3 3 0 01-3 3h-74a3 3 0 01-3-3v-74a3 3 0 013-3h74a3 3 0 013 3v74z'
-                                    }
-                                }
-                            ]
-                        },
-                    ]
-                }
-            ]
-        },chart);
-        gsap.from(heading, {
-            duration: 0.5, 
-            y: 50, 
-            opacity: 0,
-            ease: "power3.out",
-            delay: 0
-        });
-        document.getElementById("line").addEventListener('click', () => {
-            chart_switch("line");
-        });
-        document.getElementById("k_line").addEventListener('click', () => {
-            chart_switch("k_line");
-        });
     }
 
-    // csgoob源的数据
+    // csgoob源的数据(已经废弃)
     function line(){
-        var url = "https://api-csob.ok-skins.com/api/v2/goods/chart?timestamp=1739363910990";
+        var url = "https://api-csob.ok-skins.com/api/v2/goods/chart?timestamp=1740402756017";
         var post_data = {"goodsId":all_resps["id"],"platform":0,"timeRange":"HALF_YEAR","data":["createTime","minPrice","sellCount"]};
         Request.post(url,JSON.stringify(post_data),"item_line", "receive");
         wait4value("item_line").then(value => {
@@ -808,8 +765,6 @@
 
     // steamDT源的数据
     function line_dt(){
-        var hash_name = item_names[item_name].market_hash_name;
-
         var url = "https://sdt-api.ok-skins.com/user/skin/v1/item"
         var post_data = {
             "appId": 730,
@@ -817,7 +772,7 @@
         }
         Request.post(url,JSON.stringify(post_data),"item_dt", "receive");
         wait4value("item_dt").then(value=>{
-            var dt_id = JSON.parse(value).data.id;
+            var dt_id = all_resps["dt_id"]
             
             var url = "https://sdt-api.ok-skins.com/user/steam/type-trend/v2/item/details";
             var post_data = {
@@ -1128,7 +1083,7 @@
             delay: 0.3
         });
 
-        var url = "https://api-csob.ok-skins.com/api/v1/goods/chart/kline?timestamp=1739363910990";
+        var url = "https://api-csob.ok-skins.com/api/v1/goods/chart/kline?timestamp=1740402756017";
         var post_data = {"goods":{"goodsId":all_resps["id"],"platform":0},"kType":"DAY","isFilter":false,"samplingSize":5,"upPercent":30,"downPercent":30}
         Request.post(url,JSON.stringify(post_data),"item_kline", "receive");
         wait4value("item_kline").then(value => {
@@ -1237,7 +1192,73 @@
         }
     }
 
-    wait4value("id").then(value => {
+    wait4value("dt_id").then(value => {
+        var heading = _ie({
+            tag : "div",
+            className : "chart_heading",
+            children : [
+                {
+                    tag : "p",
+                    innerHTML : "价格"
+                },
+                {
+                    tag : "div",
+                    className : "chart_switch",
+                    children : [
+                        {
+                            tag: 'svg',
+                            id: 'line',
+                            attribute : {
+                                width: '1.3rem',
+                                viewBox: '64 64 896 896',
+                            },
+                            children: [
+                                {
+                                    tag: 'path',
+                                    attribute : {
+                                        d: 'M888 792H200V168c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v688c0 4.4 3.6 8 8 8h752c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM305.8 637.7c3.1 3.1 8.1 3.1 11.3 0l138.3-137.6L583 628.5c3.1 3.1 8.2 3.1 11.3 0l275.4-275.3c3.1-3.1 3.1-8.2 0-11.3l-39.6-39.6a8.03 8.03 0 00-11.3 0l-230 229.9L461.4 404a8.03 8.03 0 00-11.3 0L266.3 586.7a8.03 8.03 0 000 11.3l39.5 39.7z'
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            tag : "p",
+                            innerHTML : "|"
+                        },
+                        {
+                            tag: 'svg',
+                            id: 'k_line',
+                            attribute : {
+                                width: '1.3rem',
+                                viewBox: '64 64 896 896',
+                            },
+                            children: [
+                                {
+                                    tag: 'path',
+                                    attribute : {
+                                        d: 'M320 224h-66v-56c0-4.4-3.6-8-8-8h-52c-4.4 0-8 3.6-8 8v56h-66c-4.4 0-8 3.6-8 8v560c0 4.4 3.6 8 8 8h66v56c0 4.4 3.6 8 8 8h52c4.4 0 8-3.6 8-8v-56h66c4.4 0 8-3.6 8-8V232c0-4.4-3.6-8-8-8zm-60 508h-80V292h80v440zm644-436h-66v-96c0-4.4-3.6-8-8-8h-52c-4.4 0-8 3.6-8 8v96h-66c-4.4 0-8 3.6-8 8v416c0 4.4 3.6 8 8 8h66v96c0 4.4 3.6 8 8 8h52c4.4 0 8-3.6 8-8v-96h66c4.4 0 8-3.6 8-8V304c0-4.4-3.6-8-8-8zm-60 364h-80V364h80v296zM612 404h-66V232c0-4.4-3.6-8-8-8h-52c-4.4 0-8 3.6-8 8v172h-66c-4.4 0-8 3.6-8 8v200c0 4.4 3.6 8 8 8h66v172c0 4.4 3.6 8 8 8h52c4.4 0 8-3.6 8-8V620h66c4.4 0 8-3.6 8-8V412c0-4.4-3.6-8-8-8zm-60 145a3 3 0 01-3 3h-74a3 3 0 01-3-3v-74a3 3 0 013-3h74a3 3 0 013 3v74z'
+                                    }
+                                }
+                            ]
+                        },
+                    ]
+                }
+            ]
+        },chart);
+        gsap.from(heading, {
+            duration: 0.5, 
+            y: 50, 
+            opacity: 0,
+            ease: "power3.out",
+            delay: 0
+        });
+        document.getElementById("line").addEventListener('click', () => {
+            chart_switch("line");
+        });
+        document.getElementById("k_line").addEventListener('click', () => {
+            chart_switch("k_line");
+        });
+
         chart_switch("line"); 
     });
 })();

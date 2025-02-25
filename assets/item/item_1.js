@@ -67,9 +67,16 @@
         className : "chart"
     },document.getElementById("container"));
 
+    // 反转物品名称和hash_name
+    var reversed_item_names = Object.fromEntries(
+        Object.entries(item_names).map(([key, value]) => [
+            value.market_hash_name, 
+            { "id": value.id, "market_name": key }
+        ])
+    );
+
     // infos dt
     var hash_name = item_names[item_name].market_hash_name;
-
     var url = "https://sdt-api.ok-skins.com/user/skin/v1/item"
     var post_data = {
         "appId": 730,
@@ -111,63 +118,161 @@
             });
         }
 
+        // relations
+        var url = "https://sdt-api.ok-skins.com/user/skin/v1/sale-wear-detail"
+        var post_data = {
+            "appId": 730,
+            "marketHashName": hash_name
+        }
+        Request.post(url,JSON.stringify(post_data),"relations_dt", "receive");
+        wait4value("relations_dt").then(value=>{
+            var resp = JSON.parse(value).data;
+            relations_handling(resp);
+        })
+
         // datas
-        info_heading.children[0].innerHTML = "在售价";
-        var prices_ = resp.sellingPriceList;
-        info_heading.style.display = "";
-        gsap.from(info_heading, {
-            duration: 0.5, 
-            y: 50, 
-            opacity: 0,
-            ease: "power3.out",
-            delay: 0
-        });
-        var _option = {
+        var url = "https://sdt-api.ok-skins.com/user/skin/v1/current-sell?itemId=" + all_resps["dt_id"];
+        Request.get(url,"datas_dt", "receive");
+        wait4value("datas_dt").then(value=>{
+            var resp = JSON.parse(value).data;
+            datas_handling(resp);
+        })
+    })
+    function relations_handling(datas){
+        var related = datas.relatedList;
+        var category = datas.categoryList;
+
+        // 获取 related 里面已有的 itemId 列表
+        var related_ids = new Set(related.map(_c => _c.itemId));
+        // 过滤 category，移除已存在的 itemId
+        category = category.filter(_c => !related_ids.has(_c.itemId));
+        // 拼接 category 到 related 后面
+        related = related.concat(category);
+        
+        for (let i = 0;i<related.length;i++){
+            var _option = {
+                tag : "div",
+                className : "relation",
+                children : [
+                    {
+                        tag : "p",
+                        innerHTML : related[i].tag,
+                    },
+                    {
+                        tag : "a",
+                        innerHTML : related[i].sellPrice,
+                    },
+                ]
+            };
+            var _r = _ie(_option,relations);
+            gsap.from(_r, {
+                duration: 0.5, 
+                x: 50, 
+                opacity: 0,
+                ease: "power3.out",
+                delay: 0.3 * i
+            });
+
+            _r.addEventListener('click', function() {
+                Jump.jump("item",reversed_item_names[related[i].marketHashName].market_name);
+            });
+        }
+    }
+    function datas_handling(datas){
+        const platforms = {
+            "C5GAME": "C5",
+            "BUFF": "BUFF",
+            "悠悠": "悠悠有品",
+            "Steam": "Steam",
+            "DMarket": "DMarket",
+            "CSMoney": "CSMoney",
+            "SkinPort": "SkinPort",
+            "WaxPeer": "WaxPeer",
+            "HaloSkins": "HaloSkins"
+        }
+        
+        const _generateDataOption = (name, keyName) => {
+            const data_ = datas
+                .map(_c => ({
+                    platformName: platforms[_c.platformName],
+                    [keyName]: _c[keyName]  // 动态 key
+                }))
+                .sort((_a, _b) => _a[keyName] - _b[keyName]); // 按 key 排序
+        
+            gsap.from(_ie(_generateOption(data_, keyName), horizontal_infos_list), {
+                duration: 0.5,
+                x: 50,
+                opacity: 0,
+                ease: "power3.out",
+                delay: 0.3
+            });
+        };
+        const _generateOption = (data, key) => ({
             tag: "div",
             className: "infos",
-            children: []
-        };
-        const prices__ = prices_.sort((_a, _b) => _a.price - _b.price);
-        var counter = 1;
-        prices__.forEach(_c => {
-            let _flag = "";
-
-            if (counter === 1){
-                _flag = "<b>Min</b>"
-            }
-
-            if (counter === prices__.length){
-                _flag = "<b>Max</b>"
-            }
-            _option.children.push(
-                {
-                    tag: "div",
-                    className: "info",
-                    children: [
-                        {
-                            tag: "p",
-                            innerHTML: _c.price
-                        },
-                        {
-                            tag: "a",
-                            innerHTML: _c.platformName + _flag
-                        }
-                    ]
-                },
-            )
-
-            counter ++;
+            children: data.map(_c => ({
+                tag: "div",
+                className: "info",
+                children: [
+                    {
+                        tag: "p",
+                        innerHTML: _c[key] === 0 ? "-" : _c[key] // 处理 0 变 "-"
+                    },
+                    {
+                        tag: "a",
+                        innerHTML: _c.platformName
+                    }
+                ]
+            }))
         });
-        gsap.from(_ie(_option,horizontal_infos_list), {
-            duration: 0.5, 
-            x: 50, 
-            opacity: 0,
-            ease: "power3.out",
-            delay: 0.3
+        
+        _generateDataOption("price", "price");
+        _generateDataOption("num", "sellCount");
+        _generateDataOption("buy_price", "biddingPrice");
+        _generateDataOption("buy_num", "biddingCount");
+
+        var info_heading_names = ["在售价","在售量","求购价","求购量"];
+
+        const info_indexs = document.querySelector('.info_indexs');
+        const cards = document.querySelectorAll('.infos');
+        function create_indicators() {
+            info_indexs.innerHTML = '';
+            cards.forEach((_, index) => {
+                const dot = document.createElement('div');
+                if (index === 0) {
+                    dot.classList.add('index');
+                }
+                info_indexs.appendChild(dot);
+            });
+        }
+        create_indicators();
+
+        function update_indicator(active_index) {
+            info_heading.children[0].innerHTML = info_heading_names[active_index];
+            const dots = info_indexs.querySelectorAll('div');
+            dots.forEach((dot, index) => {
+                if (index === active_index) {
+                    dot.classList.add('index');
+                } else {
+                    dot.classList.remove('index');
+                }
+            });
+        }
+        let scroll_timeout;
+        horizontal_infos_list.addEventListener('scroll', () => {
+            if (scroll_timeout) {
+                clearTimeout(scroll_timeout);
+            }
+            scroll_timeout = setTimeout(() => {
+                let container_width = horizontal_infos_list.clientWidth;
+                let scroll_left = horizontal_infos_list.scrollLeft;
+                let active_card_index = Math.round(scroll_left / container_width);
+                update_indicator(active_card_index);
+            }, 10);
         });
+    }
 
-    })
-
+    // csob源的数据处理的辅助方法(已经废弃)
     function extractTextInBrackets(str) {
         const matches = str.match(/[\(\（]([^\)\）]+)[\)\）]/g);
         var result = matches ? matches.map(text => text.slice(1, -1)).join('-') : '';
@@ -176,7 +281,6 @@
         }
         return result
     }
-
     // csgoob源的数据处理方法(已经废弃)
     function infos_handling(){
         var resp = JSON.parse(all_resps["item_info"]).data;
@@ -489,7 +593,6 @@
             }, 10);
         });
     }
-
     // csgoob源的数据(已经废弃)
     function line(){
         var url = "https://api-csob.ok-skins.com/api/v2/goods/chart?timestamp=1740402756017";

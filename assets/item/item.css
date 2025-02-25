@@ -170,11 +170,13 @@
     height: 0.3rem;
     border-radius: 0.5rem;
     margin-right: 0.3rem;
-    transition: background-color 0.3s ease;
+    opacity: 0.6;
+    transition: all 0.3s ease;
 }
 
 .info_indexs .index{
     background-color: var(--text-color);
+    opacity: 1;
 }
 
 .info_heading svg{

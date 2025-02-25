@@ -67,7 +67,7 @@
       --theme-text-color: #1d1d1f;
       --theme-text-sub-color: #66665e;
       --theme-text-dark-color: #1d1d1f;
-      --theme-text-color-white: #1d1d1f;
+      --theme-text-color-white: #F5F5F7;
       
       --theme-box-shadow-color: #1d1d1f2e;
       
@@ -137,7 +137,7 @@ html.light-theme {
     --theme-text-color: #1d1d1f;
     --theme-text-sub-color: #66665e;
     --theme-text-dark-color: #1d1d1f;
-    --theme-text-color-white: #1d1d1f;
+    --theme-text-color-white: #F5F5F7;
 
     --theme-box-shadow-color: #1d1d1f2e;
 

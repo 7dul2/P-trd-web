@@ -272,600 +272,6 @@
         });
     }
 
-    // csob源的数据处理的辅助方法(已经废弃)
-    function extractTextInBrackets(str) {
-        const matches = str.match(/[\(\（]([^\)\）]+)[\)\）]/g);
-        var result = matches ? matches.map(text => text.slice(1, -1)).join('-') : '';
-        if (result === ""){
-            return "普通";
-        }
-        return result
-    }
-    // csgoob源的数据处理方法(已经废弃)
-    function infos_handling(){
-        var resp = JSON.parse(all_resps["item_info"]).data;
-
-        all_resps["id"] = resp.list[0].goodsId;
-
-        // tags
-        var tag_info = resp.info;
-        if (tag_info.exterior){
-            gsap.from(_ie({tag:"div",className:"tag",children:[{tag:"p",innerHTML:tag_info.exterior}]},tags), {
-                duration: 0.5, 
-                x: 50, 
-                opacity: 0,
-                ease: "power3.out",
-                delay: 0
-            });
-        }
-        gsap.from(_ie({tag:"div",className:"tag",children:[{tag:"p",innerHTML:tag_info.rarity}]},tags), {
-            duration: 0.5, 
-            x: 50, 
-            opacity: 0,
-            ease: "power3.out",
-            delay: 0.3
-        });
-        gsap.from(_ie({tag:"div",className:"tag",children:[{tag:"p",innerHTML:tag_info.quality}]},tags), {
-            duration: 0.5, 
-            x: 50, 
-            opacity: 0,
-            ease: "power3.out",
-            delay: 0.6
-        });
-
-        // relations
-        var relation_info = resp.relations;
-        for (let i = 0;i<relation_info.length;i++){
-            var _option = {
-                tag : "div",
-                className : "relation",
-                children : [
-                    {
-                        tag : "p",
-                        innerHTML : extractTextInBrackets(relation_info[i].goodsName),
-                    },
-                    {
-                        tag : "a",
-                        innerHTML : (relation_info[i].minPrice/100).toFixed(2)
-                    },
-                ]
-            };
-            var _r = _ie(_option,relations);
-            gsap.from(_r, {
-                duration: 0.5, 
-                x: 50, 
-                opacity: 0,
-                ease: "power3.out",
-                delay: 0.3 * i
-            });
-
-            _r.addEventListener('click', function() {
-                Jump.jump("item",relation_info[i].goodsName);
-            });
-        }
-
-        // infos
-        var info = resp.list;
-        var info_heading_names = ["在售价","求购价"];
-        info_heading.style.display = "";
-        gsap.from(info_heading, {
-            duration: 0.5, 
-            y: 50, 
-            opacity: 0,
-            ease: "power3.out",
-            delay: 0
-        });
-
-        var info = info.reduce((acc, item) => {
-            // 检查平台是否已存在于 acc 中
-            if (!acc.some(existingItem => existingItem.platform === item.platform)) {
-                acc.push(item); // 如果不存在，则添加到 acc
-            }
-            return acc;
-        }, []);
-
-        // 在售价格
-        const _prices = Array.from(info.values()).map(item => item.minPrice || 0);
-        var p_min = _prices.indexOf(Math.min(..._prices.filter(price => price > 0)));
-        var p_max = _prices.indexOf(Math.max(..._prices.filter(price => price > 0)));
-
-        // 求购价格
-        const _buy_prices = Array.from(info.values()).map(item => item.purchaseMaxPrice || 0);
-        var b_min = _buy_prices.indexOf(Math.min(..._buy_prices.filter(price => price > 0)));
-        var b_max = _buy_prices.indexOf(Math.max(..._buy_prices.filter(price => price > 0)));
-        var _option = {
-            tag: "div",
-            className: "infos",
-            children: [
-                {
-                    tag: "div",
-                    className: "info",
-                    children: [
-                        {
-                            tag: "p",
-                            innerHTML: isNaN(info[0].purchaseMaxPrice / 100) ? 0 : info[0].purchaseMaxPrice / 100
-                        },
-                        {
-                            tag: "a",
-                            innerHTML: "BUFF"
-                        }
-                    ]
-                },
-                {
-                    tag: "div",
-                    className: "info",
-                    children: [
-                        {
-                            tag: "p",
-                            innerHTML: isNaN(info[1].purchaseMaxPrice / 100) ? 0 : info[1].purchaseMaxPrice / 100
-                        },
-                        {
-                            tag: "a",
-                            innerHTML: "悠悠有品"
-                        }
-                    ]
-                },
-                {
-                    tag: "div",
-                    className: "info",
-                    children: [
-                        {
-                            tag: "p",
-                            innerHTML: isNaN(info[2].purchaseMaxPrice / 100) ? 0 : info[2].purchaseMaxPrice / 100
-                        },
-                        {
-                            tag: "a",
-                            innerHTML: "IGXE"
-                        }
-                    ]
-                },
-                {
-                    tag: "div",
-                    className: "info",
-                    children: [
-                        {
-                            tag: "p",
-                            innerHTML: isNaN(info[3].purchaseMaxPrice / 100) ? 0 : info[3].purchaseMaxPrice / 100
-                        },
-                        {
-                            tag: "a",
-                            innerHTML: "C5"
-                        }
-                    ]
-                }
-            ]
-        };
-        _option.children[b_max].children[1].innerHTML += "<b>Max</b>";
-        _option.children[b_min].children[1].innerHTML += "<b>Min</b>";
-        gsap.from(_ie(_option,horizontal_infos_list), {
-            duration: 0.5, 
-            x: 50, 
-            opacity: 0,
-            ease: "power3.out",
-            delay: 0.6
-        });
-        // 租赁
-
-        // 挂刀
-        var markets = ["BUFF","悠悠有品","IGXE","C5"];
-        var _option = {
-            tag : "div",
-            className : "infos",
-            children :[
-                {
-                    tag : "div",
-                    className : "info",
-                    id : "steam_max",
-                    children : [
-                        {
-                            tag : "p",
-                            innerHTML : "<c>求购价:</c>" + info[b_max].purchaseMaxPrice/100
-                        },
-                        {
-                            tag : "a",
-                            innerHTML : markets[b_max] + "<b>Max</b>"
-                        }
-                    ]
-                },
-                {
-                    tag : "div",
-                    className : "info",
-                    id : "steam_min",
-                    children : [
-                        {
-                            tag : "p",
-                            innerHTML : "<c>售价:</c>" + info[p_min].minPrice/100
-                        },
-                        {
-                            tag : "a",
-                            innerHTML : markets[p_min] + "<b>Min</b>"
-                        }
-                    ]
-                },
-                {
-                    tag : "div",
-                    className : "info",
-                    children : [
-                        {
-                            tag : "p",
-                            innerHTML : info[0].steamPrice/100
-                        },
-                        {
-                            tag : "a",
-                            innerHTML : "Steam价格"
-                        }
-                    ]
-                },
-                {
-                    tag : "div",
-                    className : "info",
-                    children : [
-                        {
-                            tag : "p",
-                            innerHTML : info[0].sellCount
-                        },
-                        {
-                            tag : "a",
-                            innerHTML : "在售量"
-                        }
-                    ]
-                },
-                {
-                    tag : "div",
-                    className : "info",
-                    children : [
-                        {
-                            tag : "p",
-                            innerHTML : tag_info.steamRatio.toFixed(3)
-                        },
-                        {
-                            tag : "a",
-                            innerHTML : "挂刀比"
-                        }
-                    ]
-                },
-                                {
-                    tag : "div",
-                    className : "info",
-                    children : [
-                        {
-                            tag : "p",
-                            innerHTML : (((1/tag_info.steamRatio)-1)*100).toFixed(2) + "%"
-                        },
-                        {
-                            tag : "a",
-                            innerHTML : "收益率"
-                        }
-                    ]
-                },
-            ]
-        };
-        gsap.from(_ie(_option,horizontal_infos_list), {
-            duration: 0.5, 
-            x: 50, 
-            opacity: 0,
-            ease: "power3.out",
-            delay: 0.9
-        });
-        info_heading_names.push("挂刀");
-        document.getElementById("steam_max").addEventListener('click', function() {
-            Jump.jump(markets[b_max],info[b_max].goodsId);
-        });            
-        document.getElementById("steam_min").addEventListener('click', function() {
-            Jump.jump(markets[p_min],info[p_min].goodsId);
-        });
-
-        const info_indexs = document.querySelector('.info_indexs');
-        const cards = document.querySelectorAll('.infos');
-        function create_indicators() {
-            info_indexs.innerHTML = '';
-            cards.forEach((_, index) => {
-                const dot = document.createElement('div');
-                if (index === 0) {
-                    dot.classList.add('index');
-                }
-                info_indexs.appendChild(dot);
-            });
-        }
-        create_indicators();
-
-        function update_indicator(active_index) {
-            info_heading.children[0].innerHTML = info_heading_names[active_index];
-            const dots = info_indexs.querySelectorAll('div');
-            dots.forEach((dot, index) => {
-                if (index === active_index) {
-                    dot.classList.add('index');
-                } else {
-                    dot.classList.remove('index');
-                }
-            });
-        }
-        let scroll_timeout;
-        horizontal_infos_list.addEventListener('scroll', () => {
-            if (scroll_timeout) {
-                clearTimeout(scroll_timeout);
-            }
-            scroll_timeout = setTimeout(() => {
-                let container_width = horizontal_infos_list.clientWidth;
-                let scroll_left = horizontal_infos_list.scrollLeft;
-                let active_card_index = Math.round(scroll_left / container_width);
-                update_indicator(active_card_index);
-            }, 10);
-        });
-    }
-    // csgoob源的数据(已经废弃)
-    function line(){
-        var url = "https://api-csob.ok-skins.com/api/v2/goods/chart?timestamp=1740402756017";
-        var post_data = {"goodsId":all_resps["id"],"platform":0,"timeRange":"HALF_YEAR","data":["createTime","minPrice","sellCount"]};
-        Request.post(url,JSON.stringify(post_data),"item_line", "receive");
-        wait4value("item_line").then(value => {
-            var resp = JSON.parse(all_resps["item_line"]).data.list;
-
-            var timestamps = resp[0].map(item => {
-                const date = new Date(item);
-                return date.getFullYear() + '-' + 
-                       (date.getMonth() + 1).toString().padStart(2, '0') + '-' + 
-                       date.getDate().toString().padStart(2, '0');
-            });
-            var prices = resp[1].map(item => item/100);
-            var nums = resp[2];
-
-            var legends = _ie({
-                tag : 'div',
-                className : "chart_legends",
-                children : [
-                    {
-                        tag : "div",
-                        className : "legend",
-                        children : [
-                            {
-                                tag : "div",
-                                className : "top",
-                                children : [
-                                    {
-                                        tag : "div",
-                                        className : "l1",
-                                    },
-                                    {
-                                        tag : "p",
-                                        innerHTML : "价格"
-                                    }
-                                ]
-                            },
-                            {
-                                tag : "p",
-                                innerHTML : prices[prices.length-1]
-                            }
-                        ]
-                    },
-                    {
-                        tag : "div",
-                        className : "legend",
-                        children : [
-                            {
-                                tag : "div",
-                                className : "top",
-                                children : [
-                                    {
-                                        tag : "div",
-                                        className : "l2",
-                                    },
-                                    {
-                                        tag : "p",
-                                        innerHTML : "在售量"
-                                    }
-                                ]
-                            },
-                            {
-                                tag : "p",
-                                innerHTML : nums[nums.length-1]
-                            }
-                        ]
-                    },
-                ]
-            },chart);
-            gsap.from(legends, {
-                duration: 0.5, 
-                y: 50, 
-                opacity: 0,
-                ease: "power3.out",
-                delay: 0
-            });
-    
-            var _chart = _ie({
-                tag : "div",
-                id : "chart"
-            },chart);
-            gsap.from(_chart, {
-                duration: 0.5, 
-                y: 50, 
-                opacity: 0,
-                ease: "power3.out",
-                delay: 0.3
-            });
-
-            var option = {
-                tooltip: {
-                    backgroundColor : "#8e8e8e",
-                    borderColor: '#8e8e8e',
-                    textStyle: {
-                        color: '#fff',
-                        fontSize: 12,
-                    },
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        label: {
-                            backgroundColor: '#8e8e8e',
-                        },
-                        fontSize: 12,
-                    },
-                    formatter: function(params) {
-                        return params.map(param => {
-                            const seriesName = param.seriesName;
-                            const value = param.value;
-                            return `${seriesName}: ${value}`;
-                        }).join('<br/>');
-                    }
-                },
-                legend: {
-                    show: false,
-                    selected: {
-                        '价格': true,
-                        "在售量" : true
-                    },
-                },
-                grid: {
-                    top: '5%',
-                    right: '13%',
-                    bottom: '15%',
-                    left: '13%',
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: timestamps,
-                    axisLabel: {
-                        fontSize: 10,
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: '#8e8e8e'
-                        }
-                    },
-                    splitLine: {
-                        show: false
-                    }
-                },
-                yAxis: [
-                    {
-                        type: 'value',
-                        scale: true,
-                        position: 'left',
-                        axisLabel: {
-                            formatter: function(value) {
-                                if (value >= 10000) {
-                                    return (value / 10000) + 'w';
-                                } else if (value >= 1000) {
-                                    return (value / 1000) + 'k';
-                                } else {
-                                    return value;
-                                }
-                            },
-                            fontSize: 10,
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: '#8e8e8e'
-                            }
-                        },
-                        splitLine: {
-                            show: true,
-                            lineStyle: {
-                                color: 'rgba(255, 255, 255, 0.05)',
-                                width: 1,
-                                type: 'solid',
-                            }
-                        },
-                    },
-                    {
-                        type: 'value',
-                        scale: true,
-                        position: 'right',
-                        axisLabel: {
-                            formatter: function(value) {
-                                if (value >= 10000) {
-                                    return (value / 10000) + 'w';
-                                } else if (value >= 1000) {
-                                    return (value / 1000) + 'k';
-                                } else {
-                                    return value;
-                                }
-                            },
-                            fontSize: 10,
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: '#8e8e8e'
-                            }
-                        },
-                        splitLine: {
-                            show: true,
-                            lineStyle: {
-                                color: 'rgba(255, 255, 255, 0.05)',
-                                width: 1,
-                                type: 'solid',
-                            }
-                        },
-                    }
-                ],
-                series: [
-                    {
-                        name: "价格",
-                        type: 'line',
-                        smooth: 0.4,
-                        symbol: 'none',
-                        lineStyle: {
-                            color: "#157efb",
-                            width: 2,
-                        },
-                        connectNulls: true,
-                        data: prices,
-                        animationDuration: 500,
-                        animationEasing: 'cubicInOut',
-                        yAxisIndex: 0
-                    },
-                    {
-                        name: "在售量",
-                        type: 'line',
-                        smooth: 0.4,
-                        symbol: 'none',
-                        lineStyle: {
-                            color: "#53d769",
-                            width: 2,
-                        },
-                        connectNulls: true,
-                        data: nums,
-                        animationDuration: 500,
-                        animationEasing: 'cubicInOut',
-                        yAxisIndex: 1 
-                    },
-                ],
-                dataZoom: [
-                    {
-                        show : false,
-                        type: 'inside',
-                        xAxisIndex: [0],
-                    },
-                    {
-                        show : false,
-                        type: 'slider',
-                        xAxisIndex: [0],
-                        bottom: 0,
-                    }
-                ]
-            };
-            const selectedStatus = {};
-            option.series.forEach(series => {
-                selectedStatus[series.name] = true;
-            });
-            var _chart_ = echarts.init(document.getElementById('chart'));
-            _chart_.setOption(option);
-            document.querySelectorAll('.legend').forEach((item, index) => {
-                item.addEventListener('click', () => {
-                    const seriesName = option.series[index].name;
-                    const isActive = item.classList.toggle('active');
-                    selectedStatus[seriesName] = !isActive;
-                    _chart_.setOption({
-                        legend: {
-                            selected: selectedStatus
-                        }
-                    });
-                });
-            });
-        });
-    }
-
     // steamDT源的数据
     function line_dt(){
         var url = "https://sdt-api.ok-skins.com/user/skin/v1/item"
@@ -893,6 +299,7 @@
                 var timestamps = resp.map(item => item[0]);
                 var prices = resp.map(item => item[1]);
                 var nums = resp.map(item => item[2]);
+                var sold_num = resp.map(item => item[6]);
 
                 // 转换时间戳为日期格式
                 timestamps = timestamps.map(item => {
@@ -954,6 +361,30 @@
                                 }
                             ]
                         },
+                        {
+                            tag : "div",
+                            className : "legend",
+                            children : [
+                                {
+                                    tag : "div",
+                                    className : "top",
+                                    children : [
+                                        {
+                                            tag : "div",
+                                            className : "l3",
+                                        },
+                                        {
+                                            tag : "p",
+                                            innerHTML : "成交量"
+                                        }
+                                    ]
+                                },
+                                {
+                                    tag : "p",
+                                    innerHTML : sold_num[sold_num.length-1]
+                                }
+                            ]
+                        },
                     ]
                 },chart);
                 gsap.from(legends, {
@@ -978,10 +409,11 @@
     
                 var option = {
                     tooltip: {
-                        backgroundColor: "#8e8e8e",
-                        borderColor: '#8e8e8e',
+                        backgroundColor: config.background_sub_color,
+                        borderColor: config.background_sub_color,
+                        extraCssText: 'box-shadow: none;', // 移除投影效果
                         textStyle: {
-                            color: '#fff',
+                            color: config.text_color ,
                             fontSize: 12,
                         },
                         trigger: 'axis',
@@ -995,7 +427,8 @@
                         axisPointer: {
                             type: 'cross',
                             label: {
-                                backgroundColor: '#8e8e8e',
+                                backgroundColor: config.background_sub_color,
+                                color: config.text_color ,
                             },
                             fontSize: 12,
                         },
@@ -1011,7 +444,8 @@
                         show: false,
                         selected: {
                             '价格': true,
-                            "在售量" : true
+                            "在售量" : true,
+                            "成交量" : true
                         },
                     },
                     grid: {
@@ -1102,11 +536,11 @@
                         {
                             name: "价格",
                             type: 'line',
-                            smooth: 0.4,
+                            smooth: 0.3,
                             symbol: 'none',
                             lineStyle: {
                                 color: "#157efb",
-                                width: 2,
+                                width: 1,
                             },
                             connectNulls: true,
                             data: prices,
@@ -1117,14 +551,29 @@
                         {
                             name: "在售量",
                             type: 'line',
-                            smooth: 0.4,
+                            smooth: 0.3,
                             symbol: 'none',
                             lineStyle: {
                                 color: "#53d769",
-                                width: 2,
+                                width: 1,
                             },
                             connectNulls: true,
                             data: nums,
+                            animationDuration: 500,
+                            animationEasing: 'cubicInOut',
+                            yAxisIndex: 1 
+                        },
+                        {
+                            name: "成交量",
+                            type: 'line',
+                            smooth: 0.3,
+                            symbol: 'none',
+                            lineStyle: {
+                                color: "#fdcb2e",
+                                width: 1,
+                            },
+                            connectNulls: true,
+                            data: sold_num,
                             animationDuration: 500,
                             animationEasing: 'cubicInOut',
                             yAxisIndex: 1 
@@ -1175,7 +624,7 @@
             tag : "div",
             id : "chart",
             style : {
-                height : "30rem"
+                height : "35rem"
             }
         },chart);
         gsap.from(_chart, {
@@ -1185,93 +634,167 @@
             ease: "power3.out",
             delay: 0.3
         });
-
-        var url = "https://api-csob.ok-skins.com/api/v1/goods/chart/kline?timestamp=1740402756017";
-        var post_data = {"goods":{"goodsId":all_resps["id"],"platform":0},"kType":"DAY","isFilter":false,"samplingSize":5,"upPercent":30,"downPercent":30}
-        Request.post(url,JSON.stringify(post_data),"item_kline", "receive");
-        wait4value("item_kline").then(value => {
-            var resp = JSON.parse(all_resps["item_kline"]).data.list;
-
-            var _chart_ = klinecharts.init('chart');
-            _chart_.setStyles({
-                grid: {
-                    show: true,
-                    horizontal: {
-                      color: 'rgba(245,245,247, 0.1)',
-                    },
-                    vertical: {
-                      color: 'rgba(245,245,247, 0.1)',
+        
+        var _chart_ = klinecharts.init('chart', {
+            layout: [
+                {
+                    type: 'candle',
+                    content: ['MA', { name: 'EMA', calcParams: [10, 30] }],
+                    options: { order: Number.MIN_SAFE_INTEGER }
+                },
+                {
+                    type: 'indicator',
+                    content: ['VOL'],
+                    options: { order: 10 }
+                },
+                {
+                    type: 'xAxis',
+                    options: { order: 9 }
+                }
+            ]
+        });
+        
+        // 设置图表样式
+        _chart_.setStyles({
+            grid: {
+                show: true,
+                horizontal: {
+                    color: 'rgba(245,245,247, 0.1)'
+                },
+                vertical: {
+                    color: 'rgba(245,245,247, 0.1)'
+                }
+            },
+            candle: {
+                bar: {
+                    upColor: config.up_color,
+                    downColor: config.down_color,
+                    upBorderColor: config.up_color,
+                    downBorderColor: config.down_color,
+                    upWickColor: config.up_color,
+                    downWickColor: config.down_color
+                },
+                priceMark: {
+                    last: {
+                        upColor: config.up_color,
+                        downColor: config.down_color
                     }
                 },
-                candle: {
-                    bar: {
+                tooltip: {
+                    backgroundColor: config.background_sub_color,
+                    showRule: 'follow_cross',
+                    showType: 'rect',
+                    custom: [
+                        { title: '时间', value: '  {time}' },
+                        { title: '开盘', value: '{open}' },
+                        { title: '最高', value: '{high}' },
+                        { title: '最低', value: '{low}' },
+                        { title: '收盘', value: '{close}' },
+                        { title: '成交量', value: '{volume}' }
+                    ],
+                    rect: {
+                        borderColor: config.background_sub_color,
+                        color: config.background_sub_color
+                    },
+                    text: {
+                        color: config.text_color,
+                    },
+                }
+            },
+            indicator: {
+                bars: [
+                    {
                         upColor: config.up_color,
-                        downColor: config.down_color,
-                        upBorderColor: config.up_color,
-                        downBorderColor: config.down_color,
-                        upWickColor: config.up_color,
-                        downWickColor: config.down_color
-                    },
-                    priceMark: {
-                        last: {
-                            upColor: config.up_color,
-                            downColor: config.down_color
-                        }
-                    },
-                    tooltip: {
-                        showRule: 'follow_cross',
-                        showType: 'rect',
-                        custom: [
-                            { title: '时间', value: '  {time}' },
-                            { title: '开盘', value: '{open}' },
-                            { title: '最高', value: '{high}' },
-                            { title: '最低', value: '{low}' },
-                            { title: '收盘', value: '{close}' },
-                            { title: '成交量', value: '{volume}' }
-                        ],
+                        downColor: config.down_color
                     }
-                },indicator: {
-                    bars: [{
-                        upColor: config.up_color,
-                        downColor: config.down_color,
-                    }],
+                ]
+            },
+            yAxis: {
+                inside: true,
+                axisLine: {
+                    show: false
+                }
+            },
+            crosshair: {
+                horizontal: {
+                    text: {
+                        color: config.text_color,
+                        borderColor: config.background_sub_color,
+                        backgroundColor: config.background_sub_color
+                    }
                 },
-                yAxis: {
-                    inside: true,
-                    axisLine: {
-                          show: false,
-                    },
-                },
+                vertical: {
+                    text: {
+                        color: config.text_color,
+                        borderColor: config.background_sub_color,
+                        backgroundColor: config.background_sub_color
+                    }
+                }
+            }
+        });
+        
+
+        const ts_now = Math.floor(Date.now() / 1000); // 当前秒级时间戳
+
+        function dt_kline_data_fetch(ts, datas, callback) {
+            var url = "https://sdt-api.ok-skins.com/user/steam/category/v1/kline?type=2&maxTime=" 
+                      + ts + "&typeVal=" + all_resps["dt_id"] + "&platform=YOUPIN&specialStyle";
+            Request.get(url, "kline_datas_dt", "receive");
+            
+            wait4value("kline_datas_dt").then(function(value) {
+                const resp = JSON.parse(all_resps["kline_datas_dt"]).data;
+                
+                // 删除缓存
+                delete all_resps["kline_datas_dt"];
+                
+                // 如果没有返回数据，则调用回调返回最终数据
+                if (!resp || resp.length === 0) {
+                    callback(datas);
+                    return;
+                }
+                
+                // 累加数据
+                datas = datas.concat(resp);
+                
+                // 往前推3个月（注意这里只是简单相减秒数，如果需要精确计算请用 Date 对象）
+                var elder_ts = ts - 24 * 3600 * 30 * 3;
+                
+                // 继续递归请求，传入累积的 datas 和最终回调
+                dt_kline_data_fetch(elder_ts, datas, callback);
             });
-
+        }
+        
+        // 调用时提供回调函数，在所有数据获取完后打印 kline_datas
+        dt_kline_data_fetch(ts_now, [], function(kline_datas) {
             var data = [];
-            var records = resp;
-    
+            var records = kline_datas;
+
             for (var i = 0; i < records.length; i++) {
                 var record = records[i];
-                var timestamp = record[0];
-                var open = record[1] / 100;
-                var close = record[2] / 100;
-                var high = record[3] / 100;
-                var low = record[4] / 100;
-                var volume = record[5];
-    
-                var date = new Date(timestamp);
-    
+                var timestamp = record[0]; // Unix 时间戳（秒）
+                var open = record[1];
+                var close = record[2];
+                var high = record[3];
+                var low = record[4];
+                var volume = record[6];
+
+                // 将秒级时间戳转换为毫秒级
+                var date = new Date(timestamp * 1000);
+
                 data.push({
                     timestamp: new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(),
                     open: open,
                     high: high,
                     low: low,
                     close: close,
-                    volume: volume
+                    volume: volume,
                 });
             }
-    
+
             data.sort((a, b) => a.timestamp - b.timestamp);
-    
+
             _chart_.applyNewData(data);
-        })
+        });
     }
 
     function chart_switch(type){

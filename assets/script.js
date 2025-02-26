@@ -487,6 +487,24 @@ function load_theme_color_preference(){
 }
 load_theme_color_preference();
 
+// 加载css的样式到js
+function load_root_style(){
+    // 获取 :root 的计算样式
+    var root_styles = getComputedStyle(document.documentElement);
+
+    // 写入配置，使用下划线命名法
+    config.primary_color = root_styles.getPropertyValue('--primary-color').trim();
+    config.background_color = root_styles.getPropertyValue('--background-color').trim();
+    config.background_color_glass = root_styles.getPropertyValue('--background-color-glass').trim();
+    config.background_color_frosted_glass = root_styles.getPropertyValue('--background-color-frosted-glass').trim();
+    config.background_sub_color = root_styles.getPropertyValue('--background-sub-color').trim();
+    config.text_color = root_styles.getPropertyValue('--text-color').trim();
+    config.text_sub_color = root_styles.getPropertyValue('--text-sub-color').trim();
+    config.text_dark_color = root_styles.getPropertyValue('--text-dark-color').trim();
+    config.text_color_white = root_styles.getPropertyValue('--text-color-white').trim();
+    config.box_shadow_color = root_styles.getPropertyValue('--box-shadow-color').trim();
+}
+load_root_style();
 
 function prevent_scroll(e) {
     e.preventDefault(); // 阻止默认滚动行为

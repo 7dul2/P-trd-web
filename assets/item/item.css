@@ -383,3 +383,33 @@
     display: flex;
     justify-content: flex-start;
 }
+
+.indicators{
+    width: 105%;
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: var(--margin_bottom_3);
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    touch-action: pan-x pan-y;
+    margin-top: var(--margin_bottom_2);
+}
+
+.indicators div{
+    background-color: var(--background-sub-color);
+    border-radius: var(--border-radius-2);
+    margin-right: 0.8rem;
+}
+
+.indicators p{
+    color: var(--text-color);
+    font-size: var(--text-2-font-size);
+    font-weight: 600;
+    margin: 0.5rem 0.3rem;
+}
+
+.indicators p[active="false"]{
+    color: var(--text-color);
+    font-size: var(--text-2-font-size);
+    margin: 0.5rem 0.3rem;
+}

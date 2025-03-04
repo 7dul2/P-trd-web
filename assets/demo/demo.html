@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="demo.css">
+    <script type="text/javascript" src="../script.js"></script>
+    <script type="text/javascript" src="../feedback.js"></script>
+    <script type="text/javascript" src="../echarts.min.js"></script>
+    <title>P-trd</title>
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "o55eccvpsb");
+    </script>
+</head> 
+
+<body>
+    <div class="menu">
+        <div class="menu_top">
+            <p id="page_name">模拟</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="account_block">
+            <div class="account_infos">
+                <p>总资产估值</p>
+                
+                <h1>5,924,215,423.80</h1>
+
+                <div>
+                    <p>今日收益</p>
+                    <up>+732,181.12(+5.21%)</up>
+                </div>
+
+                <div>
+                    <p>排名</p>
+                    <a>第 <b>5</b> 名</a>
+                </div>
+
+            </div>
+
+            <div class="account_chart">
+                <div id="account_chart"></div>
+            </div>
+        </div>
+
+        <div class="btns_block">
+            <div><p>交易</p></div>
+            <div><p>成交历史</p></div>
+        </div>
+
+        <div class="order_block">
+            <div class="orders_heading">
+                <p>委托</p>
+
+                <div class="_indexs"></div>
+            </div>
+
+            <div id="orders" class="orders_list">
+
+                <div class="orders">
+                    <div class="order">
+                        <div class="order_heading">
+                            <p>格洛克 18 型 | 远光灯 (崭新出厂)</p>
+                            <div>
+                                <buy>买入</buy>
+                                <a>2025/02/27 20:52:06</a>
+                            </div>
+                        </div>
+                        <div class="order_infos">
+                            <div class="order_info">
+                                <a>委托价格</a>
+                                <p>1.00</p>
+                            </div>
+                            <div class="order_info">
+                                <a>委托数量</a>
+                                <p>100</p>
+                            </div>
+                            <div class="order_info">
+                                <a>已成交量</a>
+                                <p>12</p>
+                            </div>
+
+                        </div>
+
+                                                <div class="order_bar">
+                            <div></div>
+                            <p></p>
+                        </div>
+                    </div>
+
+                    <div class="order">
+                        <div class="order_heading">
+                            <p>AK-47（StatTrak™） | 幻影破坏者 (略有磨损)</p>
+                            <div>
+                                <sell>卖出</sell>
+                                <a>2025/02/27 20:52:06</a>
+                            </div>
+                        </div>
+                        
+                        <div class="order_infos">
+                            <div class="order_info">
+                                <a>委托价格</a>
+                                <p>128.5</p>
+                            </div>
+                            <div class="order_info">
+                                <a>委托数量</a>
+                                <p>10</p>
+                            </div>
+                            <div class="order_info">
+                                <a>已成交量</a>
+                                <p>1</p>
+                            </div>
+                            
+                        </div>
+                                                <div class="order_bar">
+                            <div></div>
+                            <p></p>
+                        </div>
+
+                    </div>
+
+                    <div class="order">
+                        <div class="order_heading">
+                            <p>USP 消音版 | 黑色魅影 (战痕累累)</p>
+                            <div>
+                                <buy>买入</buy>
+                                <a>2025/02/27 20:52:06</a>
+                            </div>
+                        </div>
+                        
+                        <div class="order_infos">
+                            <div class="order_info">
+                                <a>委托价格</a>
+                                <p>124</p>
+                            </div>
+                            <div class="order_info">
+                                <a>委托数量</a>
+                                <p>99</p>
+                            </div>
+                            <div class="order_info">
+                                <a>已成交量</a>
+                                <p>81</p>
+                            </div>
+                            
+                        </div>
+                        <div class="order_bar">
+                            <div></div>
+                            <p></p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="orders">
+                    <div class="order">
+                        <div class="order_heading">
+                            <p>格洛克 18 型 | 远光灯 (崭新出厂)</p>
+                            <div>
+                                <buy>买入</buy>
+                                <a>2025/02/27 20:52:06</a>
+                            </div>
+                        </div>
+                        <div class="order_infos">
+                            <div class="order_info">
+                                <a>委托价格</a>
+                                <p>1.00</p>
+                            </div>
+                            <div class="order_info">
+                                <a>委托数量</a>
+                                <p>100</p>
+                            </div>
+                            <div class="order_info">
+                                <a>已成交量</a>
+                                <p>100</p>
+                            </div>
+
+                        </div>
+                                                <div class="order_bar">
+                            <div></div>
+                            <p></p>
+                        </div>
+                    </div>
+
+                    <div class="order">
+                        <div class="order_heading">
+                            <p>格洛克 18 型 | 远光灯 (崭新出厂)</p>
+                            <div>
+                                <sell>卖出</sell>
+                                <a>2025/02/27 20:52:06</a>
+                            </div>
+                        </div>
+                        
+                        <div class="order_infos">
+                            <div class="order_info">
+                                <a>委托价格</a>
+                                <p>1.20</p>
+                            </div>
+                            <div class="order_info">
+                                <a>委托数量</a>
+                                <p>100</p>
+                            </div>
+                            <div class="order_info">
+                                <a>已成交量</a>
+                                <p>81</p>
+                            </div>
+                            
+                        </div>
+                                                <div class="order_bar">
+                            <div></div>
+                            <p></p>
+                        </div>
+
+                    </div>
+
+                    <div class="order">
+                        <div class="order_heading">
+                            <p>格洛克 18 型 | 远光灯 (崭新出厂)</p>
+                            <div>
+                                <sell>卖出</sell>
+                                <a>2025/02/27 20:52:06</a>
+                            </div>
+                        </div>
+                        
+                        <div class="order_infos">
+                            <div class="order_info">
+                                <a>委托价格</a>
+                                <p>1.20</p>
+                            </div>
+                            <div class="order_info">
+                                <a>委托数量</a>
+                                <p>100</p>
+                            </div>
+                            <div class="order_info">
+                                <a>已成交量</a>
+                                <p>81</p>
+                            </div>
+                            
+                        </div>
+                                                <div class="order_bar">
+                            <div></div>
+                            <p></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="positions_block">
+            <div class="positions_heading">
+                <p>持仓</p>
+
+                <div class="_indexs"></div>
+            </div>
+
+            <div id="positions" class="positions_list">
+                <div class="positions">
+                    <div class="position">
+
+                        <div class="position_heading">
+                            <p>格洛克 18 型 | 远光灯 (崭新出厂)</p>
+                        </div>
+
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>当前价</a>
+                                <p>0.98</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总数量</a>
+                                <p>100</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总估值</a>
+                                <p>98</p>
+                            </div>
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>可售量</a>
+                                <p>12</p>
+                            </div>
+                            <div class="position_info">
+                                <a>委托量</a>
+                                <p>98</p>
+                            </div>
+
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>成本价</a>
+                                <p>1.00</p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益额</a>
+                                <p><down>-2</down></p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益率</a>
+                                <p><down>-2%</down></p>
+                            </div>
+
+                        </div>
+                        <div class="position_action">
+                            <div><p>止盈止损</p></div>
+                            <div><p>交易</p></div>
+                            <div><p>物品详细</p></div>
+                        </div>
+                    </div>
+                    <div class="position">
+
+                        <div class="position_heading">
+                            <p>加利尔 AR | 凤凰冥灯 (崭新出厂)</p>
+                        </div>
+
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>当前价</a>
+                                <p>456.78</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总数量</a>
+                                <p>12</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总估值</a>
+                                <p>1312.21</p>
+                            </div>
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>可售量</a>
+                                <p>11</p>
+                            </div>
+                            <div class="position_info">
+                                <a>委托量</a>
+                                <p>1</p>
+                            </div>
+
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>成本价</a>
+                                <p>441.3</p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益额</a>
+                                <p><up>+102.2</up></p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益率</a>
+                                <p><up>+5.76%</up></p>
+                            </div>
+
+                        </div>
+                        <div class="position_action">
+                            <div><p>止盈止损</p></div>
+                            <div><p>交易</p></div>
+                            <div><p>物品详细</p></div>
+                        </div>
+                    </div>
+                    <div class="position">
+
+                        <div class="position_heading">
+                            <p>捕兽者 | 游击队</p>
+                        </div>
+
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>当前价</a>
+                                <p>118.2</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总数量</a>
+                                <p>1001</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总估值</a>
+                                <p>211212.21</p>
+                            </div>
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>可售量</a>
+                                <p>2122</p>
+                            </div>
+                            <div class="position_info">
+                                <a>委托量</a>
+                                <p>121</p>
+                            </div>
+
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>成本价</a>
+                                <p>100</p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益额</a>
+                                <p><up>+10086.1</down></p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益率</a>
+                                <p><up>+101.21%</up></p>
+                            </div>
+
+                        </div>
+                        <div class="position_action">
+                            <div><p>止盈止损</p></div>
+                            <div><p>交易</p></div>
+                            <div><p>物品详细</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="positions">
+                    <div class="position">
+
+                        <div class="position_heading">
+                            <p>格洛克 18 型 | 远光灯 (崭新出厂)</p>
+                        </div>
+
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>当前价</a>
+                                <p>0.98</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总数量</a>
+                                <p>100</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总估值</a>
+                                <p>98</p>
+                            </div>
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>可售量</a>
+                                <p>12</p>
+                            </div>
+                            <div class="position_info">
+                                <a>委托量</a>
+                                <p>98</p>
+                            </div>
+
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>成本价</a>
+                                <p>1.00</p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益额</a>
+                                <p><down>-2</down></p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益率</a>
+                                <p><down>-2%</down></p>
+                            </div>
+
+                        </div>
+                        <div class="position_action">
+                            <div><p>止盈止损</p></div>
+                            <div><p>交易</p></div>
+                            <div><p>物品详细</p></div>
+                        </div>
+                    </div>
+                    <div class="position">
+
+                        <div class="position_heading">
+                            <p>加利尔 AR | 凤凰冥灯 (崭新出厂)</p>
+                        </div>
+
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>当前价</a>
+                                <p>456.78</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总数量</a>
+                                <p>12</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总估值</a>
+                                <p>1312.21</p>
+                            </div>
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>可售量</a>
+                                <p>11</p>
+                            </div>
+                            <div class="position_info">
+                                <a>委托量</a>
+                                <p>1</p>
+                            </div>
+
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>成本价</a>
+                                <p>441.3</p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益额</a>
+                                <p><up>+102.2</up></p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益率</a>
+                                <p><up>+5.76%</up></p>
+                            </div>
+
+                        </div>
+                        <div class="position_action">
+                            <div><p>止盈止损</p></div>
+                            <div><p>交易</p></div>
+                            <div><p>物品详细</p></div>
+                        </div>
+                    </div>
+                    <div class="position">
+
+                        <div class="position_heading">
+                            <p>捕兽者 | 游击队</p>
+                        </div>
+
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>当前价</a>
+                                <p>118.2</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总数量</a>
+                                <p>1001</p>
+                            </div>
+                            <div class="position_info">
+                                <a>总估值</a>
+                                <p>211212.21</p>
+                            </div>
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>可售量</a>
+                                <p>2122</p>
+                            </div>
+                            <div class="position_info">
+                                <a>委托量</a>
+                                <p>121</p>
+                            </div>
+
+                        </div>
+                        <div class="position_infos">
+                            <div class="position_info">
+                                <a>成本价</a>
+                                <p>100</p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益额</a>
+                                <p><up>+10086.1</down></p>
+                            </div>
+                            <div class="position_info">
+                                <a>收益率</a>
+                                <p><up>+101.21%</up></p>
+                            </div>
+
+                        </div>
+                        <div class="position_action">
+                            <div><p>止盈止损</p></div>
+                            <div><p>交易</p></div>
+                            <div><p>物品详细</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="demo.js"></script>
+</body>

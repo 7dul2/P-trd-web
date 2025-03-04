@@ -1,0 +1,277 @@
+._top svg{
+    fill: var(--text-color);
+}
+
+._top {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: var(--background-color);
+    z-index: 888;
+    user-select: none;
+}
+
+.title {
+    display: flex;
+    width: 90%;
+    padding: 0 5%;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    align-items: flex-end;
+}
+
+.title p{
+    font-size: var(--heading-2-font-size);
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: auto;
+    margin: 0;
+    margin-bottom: 1%;
+    margin-left: 1rem;
+}
+
+.nav {
+    width: 90%;
+    padding: 0 5%;
+    display: flex;
+    justify-content: space-around;
+    margin: 1rem 0px;
+    margin-bottom: 0.5rem;
+}
+
+.nav p{
+    color: var(--text-sub-color);
+    font-size: var(--text-1-font-size);
+    margin: 0;
+    transition: color 0.3s ease;
+}
+.nav p[data-active="true"]{
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.container {
+    margin-top: 7rem; 
+    min-height: 100vh;
+}
+
+.tools {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tools div{
+    width: 1.3rem;
+    margin-left: 1rem;
+}
+
+.mark {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: var(--margin_bottom_2);
+    flex-direction: column;
+    align-items: center;
+}
+
+.mark P{
+    color: var(--text-sub-color);
+    font-size: var(--text-3-font-size);
+    margin: 0;
+}
+
+.mark b{
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+#name {
+    width: 70%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.chart {
+    width: 90%;
+    margin: 0 5%;
+    min-height: 15rem;
+}
+
+.chart_heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.chart_heading p{
+    margin: 0;
+    color: var(--text-color);
+    font-size: var(--heading-2-font-size);
+    font-weight: 600;
+}
+
+.chart_switch {
+    display: flex;
+    align-items: flex-end;
+}
+.chart_switch svg{
+    fill: var(--text-sub-color);
+    transition: fill 0.3s ease;
+}
+.chart_switch svg[data-active="true"]{
+    fill: var(--text-color);
+}
+.chart_switch p{
+    color: var(--text-sub-color);
+    font-size: var(--heading-2-font-size);
+    font-weight: 400;
+    margin: 0 1rem;
+}
+
+.chart_legends {
+    width: 105%;
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: var(--margin_bottom_2);
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    touch-action: pan-x pan-y;
+    margin-top: 1rem;
+}
+.chart .top {
+    display: flex;
+}
+.chart .chart_legends .legend{
+    display: flex;
+    background-color: var(--background-sub-color);
+    border-radius: 0.5rem;
+    flex-direction: column;
+    padding: 0.5rem;
+    overflow: hidden;
+    min-width: 20%;
+    margin-right: 0.8rem;
+}
+.chart .chart_legends .legend p{
+    margin: 0px;
+    font-size: var(--text-2-font-size);
+    color: var(--text-color);
+    font-weight: 600;
+}
+.chart .chart_legends .top{
+    display: flex;
+    align-items: center;
+}
+.chart .chart_legends .top div{
+    width: 0.3rem;
+    height: 0.8rem;
+    border-radius: 0.1rem;
+    background-color: var(--chart-color-1);
+}
+.chart .chart_legends .top p{
+    font-size: var(--text-2-font-size);
+    margin-left: 0.5rem;
+    font-weight: 400;
+}
+.chart .chart {
+    width: 100%;
+    height: 60%;
+}
+.legend.active .top div{
+    background-color: var(--background-sub-color);
+}
+.chart .chart_legends .top .l1{
+    width: 0.3rem;
+    height: 0.8rem;
+    border-radius: 0.1rem;
+    background-color: var(--chart-color-1);
+}
+.chart .chart_legends .top .l2{
+    width: 0.3rem;
+    height: 0.8rem;
+    border-radius: 0.1rem;
+    background-color: var(--chart-color-2);
+}
+.chart .chart_legends .top .l3{
+    width: 0.3rem;
+    height: 0.8rem;
+    border-radius: 0.1rem;
+    background-color: var(--chart-color-3);
+}
+.legend.active .top .l1{
+    background-color: var(--text-sub-color);
+}
+.legend.active .top .l2{
+    background-color: var(--text-sub-color);
+}
+.legend.active .top .l3{
+    background-color: var(--text-sub-color);
+}
+
+#chart {
+    width: 111%;
+    height: 10rem;
+    margin-left: -5.6%;
+    margin-top: 1rem;
+}
+
+.form {
+    width: 90%;
+    margin-left: 5%;
+    margin-top: var(--margin_bottom_1);
+}
+
+.buy_inputs {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.buy_inputs ru_input{
+    margin: var(--margin_bottom_5) 0;
+    width: 48%;
+    margin-top: var(--margin_bottom_3);
+}
+
+.buy_infos {
+    display: flex;
+    justify-content: space-between;
+    margin: var(--margin_bottom_4) 0;
+}
+
+.buy_infos div{
+    display: flex;
+}
+
+.buy_infos a{
+    font-size: var(--text-1-font-size);
+    color: var(--text-sub-color);
+}
+
+.buy_infos p{
+    font-size: var(--text-1-font-size);
+    color: var(--text-color);
+    font-weight: 600;
+    margin: 0;
+    margin-left: var(--margin_bottom_4);
+}
+
+.buy_btn {
+    width: 48%;
+    margin: 0 25.5%;
+    height: 3rem;
+    border-radius: 99px;
+    display: flex;
+    background-color: #00AA41;
+    justify-content: center;
+    align-items: center;
+    margin-top: var(--margin_bottom_3);
+}
+
+.buy_btn p{
+    font-size: var(--text-1-font-size);
+    color: #F5F5F7;
+    margin: 0;
+    font-weight: 600;
+}

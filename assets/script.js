@@ -186,7 +186,7 @@ window.addEventListener('load', function() {
             height: '50%',
             bottom: '-50%', // 初始位置在屏幕下方
             left: '-1px',
-            backgroundColor: 'rgb(29, 29, 31)',
+            backgroundColor: 'var(--background-color)',
             zIndex: '999',
             borderRadius: '2rem 2rem 0px 0px',
             padding: '5% 7%',
@@ -350,6 +350,7 @@ function match_id(name,market){
 window.addEventListener("DOMContentLoaded", function() {
     var navs = {
         "首页" : "index",
+        // "模拟" : "demo",
         "我" : "profile"
     };
 

@@ -109,7 +109,7 @@
                             colorStops: [{
                                 offset: 0, color: color
                             }, {
-                                offset: 1, color: 'rgba(0,0,0,0)'
+                                offset: 1, color: config.background_color
                             }],
                         },
                     },

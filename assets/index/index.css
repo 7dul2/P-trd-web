@@ -610,7 +610,7 @@
 .item_datas float{
     font-size: var(--text-1_5-font-size);
     background-color: var(--text-sub-color);
-    color: var(--text-dark-color);
+    color: #F5F5F7;
     margin: 0;
     display: flex;
     min-width: 3.5rem;

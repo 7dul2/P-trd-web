@@ -231,16 +231,36 @@ function load_stared(items){
     items.forEach(item => {
         setTimeout(function(){
             var item_name = item[0];
+            var hash_name = item_names[item_name].market_hash_name;
 
-            var url = "https://api-csob.ok-skins.com/api/v2/goods/chart?timestamp=1739363910990";
-            
-            var post_data = {"goodsId":item_names[item_name].id,"platform":0,"timeRange":"WEEK","data":["createTime","minPrice","sellCount"]}
+            var url = "https://sdt-api.ok-skins.com/user/skin/v1/item"
+            var post_data = {
+                "appId": 730,
+                "marketHashName": hash_name
+            }
 
             var key = Math.random().toString(36).substr(2) + Date.now().toString(36);
 
-            Request.post(url,JSON.stringify(post_data),key, "receive");
-            wait4value(key).then(value => {
-                insert(JSON.parse(all_resps[key]).data.list,"star",item_name);
+            Request.post(url,JSON.stringify(post_data),"item_dt"+key, "receive");
+            wait4value("item_dt"+key).then(value=>{
+                var dt_id = JSON.parse(all_resps["item_dt"+key]).data.id;
+
+                delete all_resps["item_dt"+key];
+                // 移除cache,避免占用太多内存
+                
+                var url = "https://sdt-api.ok-skins.com/user/steam/type-trend/v2/item/details";
+                var post_data = {
+                    "platform": "BUFF",
+                    "typeDay": "1",
+                    "dateType": 3,
+                    "itemId": dt_id,
+                    "timestamp": new Date().getTime()
+                }
+                Request.post(url,JSON.stringify(post_data),key, "receive");
+                wait4value(key).then(value=>{
+                    console.log(JSON.parse(all_resps[key]));
+                    insert(JSON.parse(all_resps[key]).data,"star",item_name);
+                });
             });
         }, sleep);
         sleep += 500;
@@ -329,9 +349,9 @@ function insert(datas,type="normal",name=""){
 
     var price_html = ""; // 显示的html
     if (type === "star") {
-        var price = (datas[1][datas[1].length-1]/100).toFixed(2); // 商品价格
-        var sell_num = datas[2][datas[2].length-1];
-
+        var price = datas[datas.length-1][1]; // 商品价格
+        var sell_num = datas[datas.length-1][2];
+        
         price_html = sell_num;
     }
     if (type === "normal") {
@@ -346,7 +366,9 @@ function insert(datas,type="normal",name=""){
     }
 
     if (type === "star") {
-        var last_price = datas[1][0]/100;
+        var index = datas.length - 181;
+        var last_price = (index >= 0 && Array.isArray(datas[index])) ? datas[index][1] : 0;
+        // 24 * 30 / 4 (dt的数据一天采集24次,一周之前的数据就是-181)
         var price_change_rate = (price - last_price) / last_price;
         var value = price_change_rate; // 排行榜对应的数值
         var value_tag = "float"; // 展示value对应的html标签

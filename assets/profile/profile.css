@@ -119,3 +119,74 @@ a {
 #trend_color_icons svg:nth-child(2) {
     fill: var(--down-color);
 }
+
+.user {
+    margin: 0 5%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--margin_bottom_1);
+    display: none;
+}
+
+.user_header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.user_header p{
+    color: var(--text-color);
+    font-size: var(--heading-1-font-size);
+    font-weight: 600;
+    max-width: 85%;
+    white-space: nowrap;         /* 防止文本换行 */
+    overflow: hidden;            /* 隐藏溢出部分 */
+    text-overflow: ellipsis;     /* 显示省略号 */
+}
+
+.user_header a{
+    color: #F5F5F7;
+    font-size: var(--text-2-font-size);
+}
+
+.user_header div{
+    border-radius: 0.3rem;
+    padding: 0.1rem 0.5rem;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+    display: none;
+}
+
+.user_btns {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.user_btns div{
+    width: 8.5rem;
+    display: flex;
+    justify-content: center;
+    height: 2.5rem;
+    align-items: center;
+}
+
+.user_btns p{
+    margin: 0;
+}
+
+.user_btns div:first-child {
+    border: 2px solid var(--primary-color);
+    border-radius: 99px;
+    color: var(--text-color);
+}
+
+.user_btns div:last-child {
+    background-color: var(--primary-color);
+    border-radius: 99px;
+    box-shadow: 0 0 10px var(--primary-color);
+    color: var(--text-color-white);
+}

@@ -903,6 +903,7 @@ function sign_up_verify(){
 
             submit(value1, temp_token).then(resp => {
                 if (resp[0] === true) {
+                    document.cookies.set("auth", temp_token);
                     sign_switch("update_name");
                 } else {
                     hint.innerHTML = resp[1];
